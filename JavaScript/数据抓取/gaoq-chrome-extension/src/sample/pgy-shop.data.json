@@ -1,0 +1,19 @@
+{
+    "code": 0,
+    "success": true,
+    "msg": "成功",
+    "data": {
+        "seller_overview_info": {
+            "max_customer_portrait_rate": "0.4378698224852071",
+            "max_gender_portrait": "1",
+            "max_gender_portrait_rate": "0.9822485207100592",
+            "live_cps_per_price": 4270.636363636364,
+            "live_cps_goods_cnt": 5,
+            "max_customer_portrait": "资深中产女性",
+            "max_age_portrait": "26-30",
+            "max_age_portrait_rate": "0.22485207100591717",
+            "live_cps_goods_sell_cnt": 13,
+            "live_cps_relation_cnt": 1
+        }
+    }
+}

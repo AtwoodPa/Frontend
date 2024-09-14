@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "cookie2",
+          "operation": "remove"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "https://lf-headquarters-speed.yhgfb-cn-static.com/obj/rc-client-security/web/glue/1.0.0.26/sdk-glue.js",
+      "resourceTypes": [
+        "script"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "block",
+      "redirect": {
+        "extensionPath": "/content-scripts/injected/sdk-glue.js"
+      }
+    },
+    "condition": {
+      "urlFilter": "https://lf-headquarters-speed.yhgfb-cn-static.com/obj/rc-client-security/web/glue/1.0.0.26/sdk-glue.js",
+      "resourceTypes": [
+        "script"
+      ]
+    }
+  }
+]

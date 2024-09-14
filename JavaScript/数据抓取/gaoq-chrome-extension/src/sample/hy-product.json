@@ -1,0 +1,760 @@
+{
+    "chunk_index": 0,
+    "extra": {
+        "fatal_item_ids": [],
+        "logid": "20240704145214B380423011448370BF10",
+        "now": 1720075934000
+    },
+    "fallback_page": {
+        "icon": null,
+        "show": false,
+        "status": 0,
+        "text": ""
+    },
+    "log_pb": {
+        "impr_id": "20240704145214B380423011448370BF10"
+    },
+    "page_style": {
+        "comment_page_tag_max": 0,
+        "confirm_order_short_url": null,
+        "confirm_order_style": 1,
+        "detail_page_stats_show": true,
+        "detail_page_tag_max": 3,
+        "detail_page_tag_show": false
+    },
+    "promotion_h5": {
+        "activity_girdle_data": null,
+        "auction_record_data": null,
+        "basic_info_data": {
+            "bottom_label_list": [
+                {
+                    "coms": [
+                        {
+                            "bg": "",
+                            "border": "",
+                            "border_radius": "",
+                            "color": "",
+                            "head_icon": "",
+                            "header": "",
+                            "link": "",
+                            "text": "",
+                            "type": "text",
+                            "url": ""
+                        },
+                        {
+                            "bg": "",
+                            "border": "",
+                            "border_radius": "",
+                            "color": "",
+                            "head_icon": "",
+                            "header": "",
+                            "link": "",
+                            "text": "推荐",
+                            "type": "text",
+                            "url": ""
+                        }
+                    ],
+                    "count_down": null,
+                    "process": null,
+                    "render_type": 0
+                }
+            ],
+            "is_fold": false,
+            "price_extra_list": null,
+            "price_info": {
+                "discount_price": null,
+                "market_price": null,
+                "price": {
+                    "max_price": "",
+                    "min_price": "3?",
+                    "prefix": "",
+                    "suffix": "起"
+                },
+                "sale_num_v2": ""
+            },
+            "title_info": {
+                "head_icons": null,
+                "title": "UNNY身体素颜霜清透养肤提亮肤色水感透亮光感裸妆全身懒人霜"
+            },
+            "top_label_list": null
+        },
+        "basic_info_v2": null,
+        "car_store_data": null,
+        "collapse_detail": false,
+        "comment_data": {
+            "buyer_show": {
+                "media_list": null,
+                "title_bar": {
+                    "link": "aweme://ecom_buyer_show?title=%E4%B9%B0%E5%AE%B6%E7%A7%80\u0026product_id=3677650963788857779\u0026track_params=%7B%22comment_entrance%22%3A%22product_detail%22%2C%22comment_module%22%3A%22selected_comment%22%7D",
+                    "sum": 0,
+                    "text": ""
+                }
+            },
+            "good_comment": {
+                "comment_list": [
+                    {
+                        "avatar": "https://p11.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-avt-0015_1b470deea0185f4d47466db9e2694002.jpeg?from=4010531038",
+                        "comment_id": 8088782360944001320,
+                        "content": "擦了一节对比，不愧是公主推荐的素颜霜，味道也很好闻，水润润的，也不起泥。刘亦菲们快冲。",
+                        "name": "左**6",
+                        "rank": 15,
+                        "tag_list": null
+                    },
+                    {
+                        "avatar": "https://p3-ecom-commentpic.byteimg.com/tos-cn-i-fceoirpogb/c4e71ebbb1d933b57ae4ba51808476db.png~tplv-fceoirpogb-image.image",
+                        "comment_id": 3358008787348078886,
+                        "content": "擦了挺自然，没有假白，淋水了也没有明显的白汤，等哪天大太阳了涂出去试试看",
+                        "name": "Z**6",
+                        "rank": 13,
+                        "tag_list": [
+                            {
+                                "icon_url": "",
+                                "id": "",
+                                "link": "",
+                                "num": 0,
+                                "sentiment": 0,
+                                "text": ""
+                            }
+                        ]
+                    }
+                ],
+                "media_list": [
+                    {
+                        "image_info": {
+                            "thumbnail": "https://p3-sign.douyinpic.com/douyin-user-image-file/3a2427ca4fd961954838d9d98f05c228~tplv-shrink:169:169.webp?lk3s=d86516ab\u0026x-expires=1720720800\u0026x-signature=L0E96l0Pnkdz%2FL81XX52xscw04E%3D\u0026from=3630503595",
+                            "url": "https://p9-sign.douyinpic.com/douyin-user-image-file/3a2427ca4fd961954838d9d98f05c228~tplv-shrink:1080:1080.webp?lk3s=d86516ab\u0026x-expires=1720720800\u0026x-signature=xHQ0eJ7I1mJ9s9buGHiS7N2SHck%3D\u0026from=3630503595"
+                        },
+                        "preview_url": "",
+                        "type": 1,
+                        "video_info": null
+                    },
+                    {
+                        "image_info": {
+                            "thumbnail": "https://p3-sign.douyinpic.com/douyin-user-image-file/909d75e659e6c039c7789f821db22cd2~tplv-shrink:169:169.webp?lk3s=d86516ab\u0026x-expires=1720720800\u0026x-signature=EuwZcDd5NQzifFmG%2B8hODBCCPrQ%3D\u0026from=3630503595",
+                            "url": "https://p3-sign.douyinpic.com/douyin-user-image-file/909d75e659e6c039c7789f821db22cd2~tplv-shrink:1080:1080.webp?lk3s=d86516ab\u0026x-expires=1720720800\u0026x-signature=daOL4o3H4ExSi1VbyAU8i91RdMI%3D\u0026from=3630503595"
+                        },
+                        "preview_url": "",
+                        "type": 1,
+                        "video_info": null
+                    },
+                    {
+                        "image_info": {
+                            "thumbnail": "https://p26-sign.douyinpic.com/douyin-user-image-file/dbdecefafc1b65beca1fe31cd61a8db2~tplv-shrink:169:169.webp?lk3s=d86516ab\u0026x-expires=1720720800\u0026x-signature=xxYH2atYeprXhQJhPHbWkc76iCc%3D\u0026from=3630503595",
+                            "url": "https://p3-sign.douyinpic.com/douyin-user-image-file/dbdecefafc1b65beca1fe31cd61a8db2~tplv-shrink:1080:1080.webp?lk3s=d86516ab\u0026x-expires=1720720800\u0026x-signature=JYhpwhtDkHQUAe%2BAX73GXrzHKa4%3D\u0026from=3630503595"
+                        },
+                        "preview_url": "",
+                        "type": 1,
+                        "video_info": null
+                    },
+                    {
+                        "image_info": {
+                            "thumbnail": "https://p26-sign.douyinpic.com/douyin-user-image-file/b770b10b612bc399dcd29ebfa4f2068f~tplv-shrink:169:169.webp?lk3s=d86516ab\u0026x-expires=1720720800\u0026x-signature=HHgbpQaLlH3%2F6OUtNLFgm6mIlow%3D\u0026from=3630503595",
+                            "url": "https://p3-sign.douyinpic.com/douyin-user-image-file/b770b10b612bc399dcd29ebfa4f2068f~tplv-shrink:1080:1080.webp?lk3s=d86516ab\u0026x-expires=1720720800\u0026x-signature=snHbeS5uHMbO%2B8vpKTZhBaxx%2BAE%3D\u0026from=3630503595"
+                        },
+                        "preview_url": "",
+                        "type": 1,
+                        "video_info": null
+                    }
+                ],
+                "tag_list": [
+                    {
+                        "icon_url": "",
+                        "id": "30003",
+                        "link": "",
+                        "num": 13,
+                        "sentiment": 1,
+                        "text": "回头客"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "7348845506723840297",
+                        "link": "",
+                        "num": 43,
+                        "sentiment": 1,
+                        "text": "好用"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "7348845125767954724",
+                        "link": "",
+                        "num": 8,
+                        "sentiment": 1,
+                        "text": "物流很快"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "7348845285977620772",
+                        "link": "",
+                        "num": 7,
+                        "sentiment": 1,
+                        "text": "很好推开"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "7348853586358616356",
+                        "link": "",
+                        "num": 6,
+                        "sentiment": 1,
+                        "text": "发货速度快"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "7348845785414549772",
+                        "link": "",
+                        "num": 6,
+                        "sentiment": 1,
+                        "text": "很不错"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "7348845066456187147",
+                        "link": "",
+                        "num": 6,
+                        "sentiment": 1,
+                        "text": "很自然"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "7348859236169859339",
+                        "link": "",
+                        "num": 5,
+                        "sentiment": 1,
+                        "text": "会再来买"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "7348845057199472935",
+                        "link": "",
+                        "num": 4,
+                        "sentiment": 1,
+                        "text": "不搓泥"
+                    }
+                ],
+                "title_bar": {
+                    "link": "sslocal://ec_goods_comment/?comment_entrance=product_flow_page\u0026product_id=3677650963788857779\u0026show_header=1",
+                    "sum": 924,
+                    "text": ""
+                }
+            },
+            "good_evaluation": null,
+            "shop_extra_comment": {
+                "tag_list": [
+                    {
+                        "icon_url": "",
+                        "id": "10001",
+                        "link": "",
+                        "num": 1153,
+                        "sentiment": 1,
+                        "text": "回头客"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "980000",
+                        "link": "",
+                        "num": 198,
+                        "sentiment": 1,
+                        "text": "物流发货迅速"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "980005",
+                        "link": "",
+                        "num": 166,
+                        "sentiment": 1,
+                        "text": "购物体验棒"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "980003",
+                        "link": "",
+                        "num": 142,
+                        "sentiment": 1,
+                        "text": "性价比高"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "980002",
+                        "link": "",
+                        "num": 85,
+                        "sentiment": 1,
+                        "text": "商家服务好"
+                    },
+                    {
+                        "icon_url": "",
+                        "id": "980001",
+                        "link": "",
+                        "num": 73,
+                        "sentiment": 1,
+                        "text": "包装好"
+                    }
+                ],
+                "title_bar": {
+                    "link": "sslocal://ec_goods_comment/?comment_entrance=product_flow_page\u0026product_id=3677650963788857779\u0026shop_id=46575480\u0026show_header=1\u0026is_store_comment=1",
+                    "sum": 13562,
+                    "text": ""
+                }
+            },
+            "style_type": 0
+        },
+        "ep": null,
+        "flow_chart": null,
+        "footer_data": {
+            "alert_info": null,
+            "alert_info_v2": null,
+            "big_button_list": [
+                {
+                    "apply_coupon_info": null,
+                    "bg_color": "#FE2C550D",
+                    "button_status": "normal",
+                    "button_type": -3,
+                    "group_id": "",
+                    "jump_link": "",
+                    "need_check_sku": true,
+                    "sub_text_info": null,
+                    "text_info": {
+                        "color": "#FE2C55",
+                        "content": "加入购物车"
+                    },
+                    "timing_sale_calendar": null
+                },
+                {
+                    "apply_coupon_info": null,
+                    "bg_color": "#FE2C55",
+                    "button_status": "normal",
+                    "button_type": 0,
+                    "group_id": "",
+                    "jump_link": "",
+                    "need_check_sku": true,
+                    "sub_text_info": null,
+                    "text_info": {
+                        "color": "#FFFFFF",
+                        "content": "立即购买"
+                    },
+                    "timing_sale_calendar": {
+                        "note": "",
+                        "start_date": 0,
+                        "title": "",
+                        "url": ""
+                    }
+                }
+            ],
+            "small_button_list": [
+                {
+                    "border": "",
+                    "icon_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/ljylttvjl_lmp/ljhwZthlaukjlkulzlp/ecom_detail/detail_page__shop_icon--gray.png",
+                    "jump_link": "",
+                    "name": "店铺",
+                    "subscript": ""
+                },
+                {
+                    "border": "",
+                    "icon_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/jpw_uvlnpw/ljhwZthlaukjlkulzlp/pigeon_icon/new/good_detail.png",
+                    "jump_link": "",
+                    "name": "客服",
+                    "subscript": ""
+                },
+                {
+                    "border": "",
+                    "icon_url": "https://p26-piu.byteimg.com/tos-cn-i-8jisjyls3a/5839312b6e2348109c5328267a75dc5a~tplv-8jisjyls3a-3:0:0:q75.png",
+                    "jump_link": "",
+                    "name": "购物车",
+                    "subscript": "0"
+                }
+            ]
+        },
+        "girdle_info_v2": null,
+        "h5_pdp_scene_config": {
+            "cc": false,
+            "dtnd": false,
+            "gpt_api_domain": "https://buyin.jinritemai.com",
+            "hf": false,
+            "htnb": false,
+            "mppe": false,
+            "perpose_type": "2",
+            "spe": false,
+            "tc": false
+        },
+        "hainan_pick": null,
+        "head_figure_data": {
+            "buyer_show_image_list": null,
+            "comment_info": null,
+            "container_size": 0,
+            "live_info": {
+                "icon": "https://p3-piu.byteimg.com/tos-cn-i-8jisjyls3a/30c8e6e7757340babb23305267117929~tplv-8jisjyls3a-2:0:0:q75.image",
+                "status": "live",
+                "text": "直播中",
+                "url": "sslocal://webcast_room/?room_id=7387603628485331763\u0026user_id=99514375927"
+            },
+            "media_list": [
+                {
+                    "content_list": [
+                        {
+                            "backup_url": "https://v9-re1.douyinvod.com/f3bed52a63c647880f6b5ab4af679145/668654cc/video/tos/cn/tos-cn-v-800a60/oABNOfVJB44UhzO5UDoAKaH60Eh28xChQQAEIX/?a=1128\u0026ch=0\u0026cr=7\u0026dr=2\u0026er=0\u0026cd=0%7C0%7C0%7C1\u0026cv=1\u0026br=303\u0026bt=303\u0026cs=4\u0026ds=6\u0026ft=OXXf~77JWH6BMx..iFr0PD1IN\u0026mime_type=video_mp4\u0026qs=11\u0026rc=aGQ5OTU7ZzVnNGg0Njc0OUBpanNlOGg6Zjh2aTMzNGRoM0BfYjYtNS5jNi4xMDFiMDVjYSMuZXNhcjQwaWRgLS1kYC9zcw%3D%3D\u0026btag=c0010e00098000\u0026cquery=100L\u0026dy_q=1720075934\u0026feature_id=22eebe935d739141bc75f57beca62d29\u0026l=20240704145214B380423011448370BF10",
+                            "combination_info": null,
+                            "cover_url": "https://p26-item.ecombdimg.com/img/ecom-shop-material/BFHNQeBr_m_e894547d781b4980e1337ffc92fecbe6_sx_412464_www800-800~tplv-5mmsx3fupr-resize_q:1080:1080:q90.png",
+                            "duration": 30256,
+                            "head_video_size": "3_4",
+                            "height": 768,
+                            "jump_link": "",
+                            "jump_text": "",
+                            "url": "https://v26.douyinvod.com/da5eb5a6fe7dcaa6f1ad8503c644929f/668654cc/video/tos/cn/tos-cn-v-800a60/oABNOfVJB44UhzO5UDoAKaH60Eh28xChQQAEIX/?a=1128\u0026ch=0\u0026cr=7\u0026dr=2\u0026er=0\u0026cd=0%7C0%7C0%7C1\u0026cv=1\u0026br=303\u0026bt=303\u0026cs=4\u0026ds=6\u0026ft=OXXf~77JWH6BMx..iFr0PD1IN\u0026mime_type=video_mp4\u0026qs=11\u0026rc=aGQ5OTU7ZzVnNGg0Njc0OUBpanNlOGg6Zjh2aTMzNGRoM0BfYjYtNS5jNi4xMDFiMDVjYSMuZXNhcjQwaWRgLS1kYC9zcw%3D%3D\u0026btag=c0010e00098000\u0026cc=2a\u0026cquery=100L\u0026dy_q=1720075934\u0026feature_id=22eebe935d739141bc75f57beca62d29\u0026l=20240704145214B380423011448370BF10\u0026req_cdn_type=",
+                            "vid": "v02ecag10000cfgsl53c77ued5vbhp1g",
+                            "width": 576
+                        }
+                    ],
+                    "name": "商品",
+                    "type": "video"
+                },
+                {
+                    "content_list": [
+                        {
+                            "backup_url": "",
+                            "combination_info": null,
+                            "cover_url": "",
+                            "duration": 0,
+                            "head_video_size": "",
+                            "height": 0,
+                            "jump_link": "",
+                            "jump_text": "",
+                            "url": "https://p26-item.ecombdimg.com/img/ecom-shop-material/BFHNQeBr_m_e894547d781b4980e1337ffc92fecbe6_sx_412464_www800-800~tplv-5mmsx3fupr-resize_q:1080:1080:q90.png",
+                            "vid": "",
+                            "width": 0
+                        },
+                        {
+                            "backup_url": "",
+                            "combination_info": null,
+                            "cover_url": "",
+                            "duration": 0,
+                            "head_video_size": "",
+                            "height": 0,
+                            "jump_link": "",
+                            "jump_text": "",
+                            "url": "https://p26-item.ecombdimg.com/img/ecom-shop-material/BFHNQeBr_m_8289739c09235020349d9c69f026770b_sx_406929_www800-800~tplv-5mmsx3fupr-resize_q:1080:1080:q90.png",
+                            "vid": "",
+                            "width": 0
+                        },
+                        {
+                            "backup_url": "",
+                            "combination_info": null,
+                            "cover_url": "",
+                            "duration": 0,
+                            "head_video_size": "",
+                            "height": 0,
+                            "jump_link": "",
+                            "jump_text": "",
+                            "url": "https://p26-item.ecombdimg.com/img/ecom-shop-material/BFHNQeBr_m_e8d65b43aa4acbf3a7ada636774d6c13_sx_315469_www800-800~tplv-5mmsx3fupr-resize_q:1080:1080:q90.png",
+                            "vid": "",
+                            "width": 0
+                        },
+                        {
+                            "backup_url": "",
+                            "combination_info": null,
+                            "cover_url": "",
+                            "duration": 0,
+                            "head_video_size": "",
+                            "height": 0,
+                            "jump_link": "",
+                            "jump_text": "",
+                            "url": "https://p26-item.ecombdimg.com/img/ecom-shop-material/BFHNQeBr_m_26cbd62524e862ef204caff791f55fc6_sx_280644_www800-800~tplv-5mmsx3fupr-resize_q:1080:1080:q90.png",
+                            "vid": "",
+                            "width": 0
+                        },
+                        {
+                            "backup_url": "",
+                            "combination_info": null,
+                            "cover_url": "",
+                            "duration": 0,
+                            "head_video_size": "",
+                            "height": 0,
+                            "jump_link": "",
+                            "jump_text": "",
+                            "url": "https://p3-item.ecombdimg.com/img/ecom-shop-material/BFHNQeBr_m_4582931b345aa75ecf0c7b4a699836f9_sx_67690_www800-800~tplv-5mmsx3fupr-resize_q:1080:1080:q90.png",
+                            "vid": "",
+                            "width": 0
+                        }
+                    ],
+                    "name": "商品",
+                    "type": "image"
+                }
+            ],
+            "style_type": 0
+        },
+        "init_popup_data": {},
+        "nav_bar_data": {
+            "is_collect": 0,
+            "navbar_list": [
+                {
+                    "icon_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/ljylttvjl_lmp/ljhwZthlaukjlkulzlp/ecom_detail/Frame.png",
+                    "jump_link": "",
+                    "type": "search"
+                },
+                {
+                    "icon_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/ljylttvjl_lmp/ljhwZthlaukjlkulzlp/ecom_detail/collect.png",
+                    "jump_link": "",
+                    "type": "collect"
+                },
+                {
+                    "icon_url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/ljylttvjl_lmp/ljhwZthlaukjlkulzlp/ecom_detail/icon_live_share.png",
+                    "jump_link": "",
+                    "type": "share"
+                }
+            ],
+            "share_data": {
+                "desc": "UNNY身体素颜霜清透养肤提亮肤色水感透亮光感裸妆全身懒人霜",
+                "image": "https://p26-item.ecombdimg.com/img/ecom-shop-material/BFHNQeBr_m_e894547d781b4980e1337ffc92fecbe6_sx_412464_www800-800~tplv-5mmsx3fupr-resize_q:1080:1080:q90.png"
+            },
+            "style_type": 0
+        },
+        "pack_detail": {
+            "style_type": 0
+        },
+        "page_data": {
+            "tag_guarantee_header": ""
+        },
+        "page_meta": {
+            "common_meta": {
+                "product_id": "3677650963788857779",
+                "promotion_id": "3677650963788857779"
+            },
+            "track_meta": {}
+        },
+        "product_support_info_data": {
+            "header_content": {
+                "background": "#FFFFFF",
+                "content_color": "#161823",
+                "service_tag": {}
+            },
+            "logistics_content": {
+                "content_list": [
+                    {
+                        "coms": [
+                            {
+                                "bg": "",
+                                "border": "",
+                                "border_radius": "",
+                                "color": "",
+                                "head_icon": "",
+                                "header": "",
+                                "link": "",
+                                "text": "",
+                                "type": "icon",
+                                "url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/nmeh7nulmuhknuhog/detail_tag_icon/cirifa.png"
+                            },
+                            {
+                                "bg": "",
+                                "border": "",
+                                "border_radius": "",
+                                "color": "",
+                                "head_icon": "",
+                                "header": "",
+                                "link": "",
+                                "text": "现在付款，明天从江苏省南通市发货，包邮",
+                                "type": "text",
+                                "url": ""
+                            }
+                        ],
+                        "label_type": 4,
+                        "link": ""
+                    }
+                ],
+                "title": "物流"
+            },
+            "reward_content": {
+                "content_list": [
+                    {
+                        "banner_info": null,
+                        "coms": [
+                            {
+                                "bg": "",
+                                "border": "",
+                                "border_radius": "",
+                                "color": "",
+                                "head_icon": "",
+                                "header": "",
+                                "link": "",
+                                "text": "",
+                                "type": "icon",
+                                "url": "https://p6-piu.byteimg.com/tos-cn-i-8jisjyls3a/2fdfa37015924263adedb19a57796fc1~tplv-8jisjyls3a-3:0:0:q75.png"
+                            },
+                            {
+                                "bg": "",
+                                "border": "",
+                                "border_radius": "",
+                                "color": "",
+                                "head_icon": "",
+                                "header": "会员券",
+                                "link": "",
+                                "text": "满100减5",
+                                "type": "text",
+                                "url": ""
+                            }
+                        ],
+                        "coupon_info": null,
+                        "label_type": 1,
+                        "link": "sslocal://webcast_lynxview?url=https%3A%2F%2Flf-webcast-sourcecdn-tos.bytegecko.com%2Fobj%2Fbyte-gurd-source%2Fwebcast%2Fecom%2Flynx%2Ffe_reactlynx_ecommerce_coupon_panel%2Fapp%2Ftemplate.js\u0026type=popup\u0026gravity=bottom\u0026add_safe_area_height=0\u0026height_percent=73\u0026top_level=1\u0026mask_alpha=0.5\u0026use_real_screen_height=1",
+                        "render_type": 0
+                    }
+                ],
+                "title": "活动"
+            },
+            "safety_content": {
+                "content_list": [
+                    {
+                        "banner": null,
+                        "coms": [
+                            {
+                                "bg": "",
+                                "border": "",
+                                "border_radius": "",
+                                "color": "",
+                                "head_icon": "",
+                                "header": "",
+                                "link": "",
+                                "text": "7天无理由退货",
+                                "type": "text",
+                                "url": ""
+                            },
+                            {
+                                "bg": "",
+                                "border": "",
+                                "border_radius": "",
+                                "color": "rgba(22, 24, 35, 0.5)",
+                                "head_icon": "",
+                                "header": "",
+                                "link": "",
+                                "text": "·",
+                                "type": "text",
+                                "url": ""
+                            },
+                            {
+                                "bg": "",
+                                "border": "",
+                                "border_radius": "",
+                                "color": "",
+                                "head_icon": "",
+                                "header": "",
+                                "link": "",
+                                "text": "运费险",
+                                "type": "text",
+                                "url": ""
+                            },
+                            {
+                                "bg": "",
+                                "border": "",
+                                "border_radius": "",
+                                "color": "rgba(22, 24, 35, 0.5)",
+                                "head_icon": "",
+                                "header": "",
+                                "link": "",
+                                "text": "·",
+                                "type": "text",
+                                "url": ""
+                            },
+                            {
+                                "bg": "",
+                                "border": "",
+                                "border_radius": "",
+                                "color": "",
+                                "head_icon": "",
+                                "header": "",
+                                "link": "",
+                                "text": "过敏包退",
+                                "type": "text",
+                                "url": ""
+                            }
+                        ],
+                        "label_type": 1,
+                        "link": "",
+                        "render_type": 0
+                    }
+                ],
+                "safety_popup_content": [
+                    {
+                        "content": "满足相应条件（未使用）时，消费者可申请7天无理由退货",
+                        "left_icon": "http://p3-item.ecombdimg.com/tos-cn-i-5mmsx3fupr/second_page_common_icon_blue.png~tplv-5mmsx3fupr-image.webp",
+                        "tag": "",
+                        "title": "7天无理由退货",
+                        "url": "sslocal://webcast_webview?pad_ratio=0.5\u0026enable_pad_ratio=1\u0026screen_size_adaptation=1\u0026enable_pad_adapter=1\u0026landscape_custom_height=1\u0026rate_height=360\u0026loader_name=forest\u0026use_wk_falcon=1\u0026use_real_screen_height=1\u0026add_safe_area_height=0\u0026pull_down_close=1\u0026mask_alpha=0.5\u0026hide_status_bar=0\u0026radius=20\u0026up_height_percent=73\u0026hide_nav_bar=1\u0026up_offset_height=400\u0026element_view_name=mainTableView\u0026enable_move=1\u0026show_close=0\u0026disable_nested_child_scroll=1\u0026hide_loading=1\u0026close_icon_position=-1\u0026show_back=0\u0026mall_homepage_popup=1\u0026type=popup\u0026width_percent=100\u0026up_full_screen=1\u0026status_bar_color=black\u0026enable_share=0\u0026animation_type=present\u0026trans_status_bar=1\u0026height_percent=73\u0026gravity=bottom\u0026top_level=1\u0026up_trans_status_bar=1\u0026scroll_view_name=list\u0026web_bg_color=%2300ffffff\u0026url=https%3A%2F%2Fffh.jinritemai.com%2Fforest%2Frender%2Ffe%2Ftemplate%2Fchannel%2Fecommerce_price_protection_h5%2Fhtml%2Fservice-rule%2Findex.html%3Fenter_from%3Da1.b03129%26enter_from_live_saas%3D0%26__pia_manifest__%3D%257B%2522worker%2522%253Atrue%252C%2522page_name%2522%253A%2522service-rule%2522%252C%2522public_path%2522%253A%2522https%253A%252F%252Flf-webcast-sourcecdn-tos.bytegecko.com%252Fobj%252Fbyte-gurd-source%252F10181%252Fgecko%252Fresource%252Fecommerce_price_protection_h5%252F%2522%252C%2522gecko_channel%2522%253A%2522ecommerce_price_protection_h5%2522%257D%26privilege_code%3Dunsupport_7days_refund_after_use%26biz_params%3D"
+                    },
+                    {
+                        "content": "退货或换货，均可享受一定金额的运费补贴（全球购商品不支持换货)",
+                        "left_icon": "http://p3-item.ecombdimg.com/tos-cn-i-5mmsx3fupr/second_page_common_icon_blue.png~tplv-5mmsx3fupr-image.webp",
+                        "tag": "",
+                        "title": "运费险",
+                        "url": "sslocal://webcast_webview?pad_ratio=0.5\u0026enable_pad_ratio=1\u0026screen_size_adaptation=1\u0026enable_pad_adapter=1\u0026landscape_custom_height=1\u0026rate_height=360\u0026loader_name=forest\u0026use_wk_falcon=1\u0026use_real_screen_height=1\u0026add_safe_area_height=0\u0026pull_down_close=1\u0026mask_alpha=0.5\u0026hide_status_bar=0\u0026radius=20\u0026up_height_percent=73\u0026hide_nav_bar=1\u0026up_offset_height=400\u0026hide_loading=1\u0026type=popup\u0026width_percent=100\u0026up_full_screen=1\u0026status_bar_color=black\u0026enable_share=0\u0026trans_status_bar=1\u0026height_percent=73\u0026gravity=bottom\u0026top_level=1\u0026up_trans_status_bar=1\u0026web_bg_color=ffffffff\u0026url=https%3A%2F%2Fffh.jinritemai.com%2Fforest%2Frender%2Ffe%2Ftemplate%2Fchannel%2Fecommerce_price_protection_h5%2Fhtml%2Fservice-rule%2Findex.html%3Fprivilege_code%3Dinsurance_freight%26enter_from%3Da1.b4943%26enter_from_live_saas%3D0%26biz_params%3D%26__pia_manifest__%3D%257B%2522worker%2522%253Atrue%252C%2522page_name%2522%253A%2522service-rule%2522%252C%2522public_path%2522%253A%2522https%253A%252F%252Flf-webcast-sourcecdn-tos.bytegecko.com%252Fobj%252Fbyte-gurd-source%252F10181%252Fgecko%252Fresource%252Fecommerce_price_protection_h5%252F%2522%252C%2522gecko_channel%2522%253A%2522ecommerce_price_protection_h5%2522%257D"
+                    },
+                    {
+                        "content": "签收60天内，使用该商品出现过敏，在提供有效凭证的情况下，商家支持退货退款且包退货运费",
+                        "left_icon": "http://p3-item.ecombdimg.com/tos-cn-i-5mmsx3fupr/second_page_common_icon_blue.png~tplv-5mmsx3fupr-image.webp",
+                        "tag": "",
+                        "title": "过敏包退",
+                        "url": "sslocal://webcast_webview?pad_ratio=0.5\u0026enable_pad_ratio=1\u0026screen_size_adaptation=1\u0026enable_pad_adapter=1\u0026landscape_custom_height=1\u0026rate_height=360\u0026loader_name=forest\u0026use_wk_falcon=1\u0026use_real_screen_height=1\u0026add_safe_area_height=0\u0026pull_down_close=1\u0026mask_alpha=0.5\u0026hide_status_bar=0\u0026radius=20\u0026up_height_percent=73\u0026hide_nav_bar=1\u0026up_offset_height=400\u0026element_view_name=maintableview\u0026enable_move=1\u0026show_close=0\u0026disable_nested_child_scroll=1\u0026hide_loading=1\u0026close_icon_position=-1\u0026show_back=0\u0026mall_homepage_popup=1\u0026type=popup\u0026width_percent=100\u0026up_full_screen=1\u0026status_bar_color=black\u0026enable_share=0\u0026animation_type=present\u0026trans_status_bar=1\u0026height_percent=73\u0026gravity=bottom\u0026top_level=1\u0026up_trans_status_bar=1\u0026scroll_view_name=list\u0026web_bg_color=%2300ffffff\u0026url=https%3a%2f%2fffh.jinritemai.com%2fforest%2frender%2ffe%2ftemplate%2fchannel%2fecommerce_price_protection_h5%2fhtml%2fservice-rule%2findex.html%3fenter_from%3da1.b03129%26enter_from_live_saas%3d0%26__pia_manifest__%3d%257b%2522worker%2522%253atrue%252c%2522page_name%2522%253a%2522service-rule%2522%252c%2522public_path%2522%253a%2522https%253a%252f%252flf-webcast-sourcecdn-tos.bytegecko.com%252fobj%252fbyte-gurd-source%252f10181%252fgecko%252fresource%252fecommerce_price_protection_h5%252f%2522%252c%2522gecko_channel%2522%253a%2522ecommerce_price_protection_h5%2522%257d%26privilege_code%3dallergy_refund%26biz_params%3d"
+                    },
+                    {
+                        "content": "满足相应条件时，待发货状态下，提交退款申请将免审核立即退款",
+                        "left_icon": "http://p3-item.ecombdimg.com/tos-cn-i-5mmsx3fupr/second_page_common_icon_blue.png~tplv-5mmsx3fupr-image.webp",
+                        "tag": "",
+                        "title": "极速退款",
+                        "url": "sslocal://webcast_webview?pad_ratio=0.5\u0026enable_pad_ratio=1\u0026screen_size_adaptation=1\u0026enable_pad_adapter=1\u0026landscape_custom_height=1\u0026rate_height=360\u0026loader_name=forest\u0026use_wk_falcon=1\u0026use_real_screen_height=1\u0026add_safe_area_height=0\u0026pull_down_close=1\u0026mask_alpha=0.5\u0026hide_status_bar=0\u0026radius=20\u0026up_height_percent=73\u0026hide_nav_bar=1\u0026up_offset_height=400\u0026hide_loading=1\u0026type=popup\u0026width_percent=100\u0026up_full_screen=1\u0026status_bar_color=black\u0026enable_share=0\u0026trans_status_bar=1\u0026height_percent=73\u0026gravity=bottom\u0026top_level=1\u0026up_trans_status_bar=1\u0026web_bg_color=ffffffff\u0026url=https%3A%2F%2Fffh.jinritemai.com%2Fforest%2Frender%2Ffe%2Ftemplate%2Fchannel%2Fecommerce_price_protection_h5%2Fhtml%2Fservice-rule%2Findex.html%3Fprivilege_code%3Drefund_speed%26enter_from%3Da1.b4943%26enter_from_live_saas%3D0%26biz_params%3D%257B%2522first_cid%2522%253A20029%252C%2522fourth_cid%2522%253A0%252C%2522second_cid%2522%253A20574%252C%2522shop_id%2522%253A46575480%252C%2522third_cid%2522%253A24870%257D%26__pia_manifest__%3D%257B%2522worker%2522%253Atrue%252C%2522page_name%2522%253A%2522service-rule%2522%252C%2522public_path%2522%253A%2522https%253A%252F%252Flf-webcast-sourcecdn-tos.bytegecko.com%252Fobj%252Fbyte-gurd-source%252F10181%252Fgecko%252Fresource%252Fecommerce_price_protection_h5%252F%2522%252C%2522gecko_channel%2522%253A%2522ecommerce_price_protection_h5%2522%257D"
+                    },
+                    {
+                        "content": "查看商家详细资质信息",
+                        "left_icon": "http://p3-item.ecombdimg.com/tos-cn-i-5mmsx3fupr/second_page_common_icon_blue.png~tplv-5mmsx3fupr-image.webp",
+                        "tag": "",
+                        "title": "商家资质",
+                        "url": "https://haohuo.jinritemai.com/views/shop/multipleLicenses?id=BFHNQeBr"
+                    },
+                    {
+                        "content": "点击查看平台公示专区",
+                        "left_icon": "http://p3-item.ecombdimg.com/tos-cn-i-5mmsx3fupr/second_page_common_icon_blue.png~tplv-5mmsx3fupr-image.webp",
+                        "tag": "public_zone",
+                        "title": "本商品享受上述商家服务",
+                        "url": "https://mix.jinritemai.com/falcon/mix_page/index.html?__live_platform__=webcast\u0026allowMediaAutoPlay=1\u0026enter_from=others\u0026hide_nav_bar=1\u0026hide_system_video_poster=1\u0026id=7117178766052294949\u0026origin_type=others\u0026should_full_screen=1\u0026trans_status_bar=1\u0026ttwebview_extension_mixrender=1"
+                    }
+                ],
+                "service_type": "101073,2,30,5,9,10",
+                "title": "保障"
+            }
+        },
+        "rank_info_v2": null,
+        "redirect_location": "",
+        "redirect_location_v2": "",
+        "shop_coupon_data": {
+            "shop_coupon_list": null
+        },
+        "shop_info": {
+            "basic_info": {
+                "account_url": "",
+                "background": "",
+                "brand_icon": "",
+                "grade_info": {
+                    "desc": "",
+                    "is_new_style": true,
+                    "score": 4.9
+                },
+                "new_brand_icon": "",
+                "shop_extra_info": null,
+                "shop_icon_list": null,
+                "shop_link_button": {
+                    "background": "#FE2C55FF",
+                    "color": "",
+                    "link": "sslocal://goods/store?entrance_location=product_detail_live\u0026pass_through_api=%7B%22pre_product_id_new%22%3A%223677650963788857779%22%2C%22product_author_info_map%22%3A%22%7B%5C%223677650963788857779%5C%22%3A%5B%5C%22MS4wLjABAAAA2I9NdgAKZrz9e0tLm1csyDMNqLESPDm34TdYYqXe8-I%5C%22%5D%7D%22%7D\u0026sec_shop_id=BFHNQeBr\u0026url_maker=shop_sdk",
+                    "text": "进店逛逛"
+                },
+                "shop_logo": "https://p3-item.ecombdimg.com/img/tos-cn-i-6vegkygxbk/748a05c43dc04cfb947a741255b39a4a~tplv-5mmsx3fupr-resize:74:74.png",
+                "shop_name": "UNNY CLUB悠宜之美美妆专卖店",
+                "status_icon_info": {
+                    "icon": "https://p3-piu.byteimg.com/tos-cn-i-8jisjyls3a/30c8e6e7757340babb23305267117929~tplv-8jisjyls3a-2:0:0:q75.image",
+                    "icon_type": 1
+                }
+            },
+            "style_type": 0
+        },
+        "style_type": 0,
+        "support_info_v2": null,
+        "templates": {},
+        "warning_dialog": null
+    },
+    "promotions": null,
+    "status_code": 0
+}

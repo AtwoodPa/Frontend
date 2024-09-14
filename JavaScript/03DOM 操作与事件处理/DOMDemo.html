@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM</title>
+</head>
+<body>
+    <p>
+        Hello World!
+    </p>
+</body>
+<script>
+
+    var a = function hi(){
+        console.log("Hello JS")
+        alert(666)
+
+    }
+    a()
+</script>
+
+<!--这样会报错-->
+<!--<script>-->
+<!--    function sayScript() {-->
+<!--        console.log("</script>");-->
+<!--}-->
+<!--</script>-->
+<script>
+    function sayScript() {
+        console.log("<\/script>");
+    }
+    sayScript
+</script>
+</html>

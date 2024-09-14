@@ -1,0 +1,67 @@
+{
+  "name": "gaoqu",
+  "description": "告趣助手",
+  "version": "1.0.0",
+  "icons": {
+    "16": "assets/icons/logo.png",
+    "48": "assets/icons/logo.png",
+    "128": "assets/icons/logo.png"
+  },
+  "action": {
+    "default_popup": "../popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.xingtu.cn/*",
+        "https://www.douyin.com/*",
+        "https://www.xiaohongshu.com/*",
+        "https://buyin.jinritemai.com/*",
+        "https://haohuo.jinritemai.com/*",
+        "https://pgy.xiaohongshu.com/*",
+        "http://op.gaoq.com/*",
+        "http://localhost:8088/*",
+        "http://172.18.0.117:8088/*"
+      ],
+      "js": [
+        "content-scripts/common.ts"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "service_worker": "background.ts"
+  },
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "assets/*",
+        "content-scripts/injected/*"
+      ]
+    }
+  ],
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "cookies",
+    "webNavigation",
+    "clipboardRead",
+    "notifications",
+    "storage",
+    "scripting",
+    "proxy",
+    "activeTab",
+    "browsingData",
+    "ttsEngine",
+    "tts",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "manifest_version": 3
+}

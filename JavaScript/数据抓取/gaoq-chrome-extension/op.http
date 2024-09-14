@@ -1,0 +1,14 @@
+@url=http://op.gaoq.com/
+
+###
+get {{url}}resource/by/ifNeedWxOrPhone?mediaId=A7758528A
+
+
+###
+post {{url}}/resource/by/updateWxOrPhone
+Content-Type: application/json
+
+{
+    "mediaId": "zhaixing574857",
+    "phone": "123"
+}

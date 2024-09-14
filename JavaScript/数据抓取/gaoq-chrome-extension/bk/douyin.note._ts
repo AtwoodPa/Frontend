@@ -1,0 +1,11 @@
+import { makeSureLoad } from "../util";
+import { getHandler } from "../../handlerFactory";
+import bus from "../bus";
+import api from '@/api';
+const Tag = 'content-script/douyin/douyin-note'
+console.log(Tag, 'load')
+makeSureLoad(async function () {
+    const handler = await getHandler();
+    console.log('handler', handler);
+    handler.douyinNote2User(bus, api)
+})

@@ -1,0 +1,51 @@
+{
+    "success": true,
+    "msg": "ok",
+    "data": {
+        "result_list": [
+            {
+                "sellerInfo": {
+                    "sellerName": "moonnow二手奢侈品",
+                    "sellerId": "64f0509300efc800012a9c97",
+                    "sellerBrandLink": {
+                        "appRnShopLink": "xhsdiscover://rn/dspyxis/compass/plan/shop?id=64f0509300efc800012a9c97",
+                        "appH5ShopLink": "https://fe.xiaohongshu.com/apps/vincent/ds-brand/detail?id=64f0509300efc800012a9c97&fullscreen=true"
+                    },
+                    "image": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo30scin1vjjc005o7llv0gbno2bhefqno?imageView2/2/w/80/format/jpg",
+                    "shopType": -1,
+                    "sellerScore": {
+                        "sellerScore": "4.42",
+                        "itemScore": "4.46",
+                        "replyRateScore": "4.44",
+                        "deliveryScore": "4.26"
+                    },
+                    "sellerDataInfo": {
+                        "distributorNum30d": 1,
+                        "saleQuantity": 2136,
+                        "fansNum": 7843
+                    },
+                    "sellerConnectionButtonInfo": {
+                        "title": "联系商家",
+                        "subTitle": "符合商家意向要求，点击查看联系方式",
+                        "titleType": 1,
+                        "beginReachThreshold": true,
+                        "sellerHasContactInfo": true,
+                        "sellerSetThreshold": false,
+                        "buyerHasContactInfo": true
+                    },
+                    "sellerWechatInfo": {}
+                },
+                "tagInfo": {
+                    "mindLabel": [
+                        {
+                            "type": 1,
+                            "text": "4.42",
+                            "preText": "店铺分"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "code": 0
+}

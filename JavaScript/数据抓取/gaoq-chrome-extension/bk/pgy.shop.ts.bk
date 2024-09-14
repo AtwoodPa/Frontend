@@ -1,0 +1,412 @@
+import { Context, Options, CertPerm } from "../../handler/handler.interface";
+import { Platform, ImportOrigin, PlatformOrigin } from "../enum";
+import { formatDate, randomColor } from "../util";
+import { Shop } from "./pgy.interface";
+import { Classes, makeCss } from "./pgy.shop.jss";
+interface Reactive {
+    show: boolean;
+    loading: boolean;
+    checked: boolean;
+    updatedTime: string;
+    exists: boolean;
+    shop: Shop;
+}
+export class PgyShopHandler extends CertPerm {
+    reactive!: Reactive;
+    classes!: Classes;
+    constructor(context: Context, options: Options) {
+        options.needInstallCertPem = true;
+        super(context, options);
+        this._init();
+    }
+    async _init() {
+        this._css();
+        await this._prepareUser();
+        this._view();
+        this._parse();
+    }
+    _css() {
+        let { $jss } = this.context;
+        let { classes } = makeCss($jss);
+        this.classes = classes;
+    }
+    async _parse() {
+        let { $bus } = this.context;
+        let match = window.location.search.match(/\?sellerId=([^&]*)/);
+        if (match) {
+            let shop_id = decodeURIComponent(match[1]);
+            let [basic, data, intention, contact] = await Promise.all([
+                $bus.subscribe(
+                    /detail\/basic/,
+                    (rs: string) => {
+                        let body = $bus.parseBody(rs);
+                        return body.data;
+                    }),
+                $bus.subscribe(
+                    /detail\/data/,
+                    (rs: string) => {
+                        let body = $bus.parseBody(rs);
+                        return body.data;
+                    }),
+                $bus.subscribe(/cooperation\/intention/, (rs: string) => {
+                    let body = $bus.parseBody(rs);
+                    return body.data;
+                }),
+                this.api.ajax.get(`https://pgy.xiaohongshu.com/api/draco/selection-center/user/contact/info?seller_id=${shop_id}`)
+            ]);
+            let { sellerId, sellerName, image, sellerDataInfo, sellerScore } = basic.result_list[0].sellerInfo;
+            let { seller_overview_info } = data;
+            let { target_buyer } = intention || {};
+            let { seller_connection_info } = contact.data;
+            if (seller_connection_info) {
+                let { tel, wechat, contact_person } = seller_connection_info;
+                Object.assign(this.reactive.shop, {
+                    wx: wechat,
+                    phone: tel,
+                    person: contact_person
+                })
+            }
+            Object.assign(this.reactive.shop, {
+                shop_id: sellerId,
+                shop_name: sellerName,
+                shop_image: image,
+                shopScore: sellerScore,
+                liveOverview: seller_overview_info,
+                categories: target_buyer ? target_buyer.content_categorys : []
+            })
+            if (sellerDataInfo) {
+                let { distributorNum30d, fansNum, saleQuantity } = sellerDataInfo;
+                Object.assign(this.reactive.shop, {
+                    corp_daren_count: distributorNum30d,
+                    fansNum,
+                    saleQuantity
+                })
+            }
+            this._ifUpdate()
+        }
+
+    }
+    _ifUpdate = async () => {
+        let { userTabId, context, api, reactive } = this;
+        let { user } = userTabId;
+        let { $toRaw } = context;
+        let { code, data } = await api.shop.ifUpdate({
+            opId: user.id,
+            token: user.token,
+            shop: $toRaw(reactive.shop),
+        });
+        if (code == 0) {
+            let { modifiedCount } = data;
+            reactive.exists = modifiedCount > 0;
+            reactive.updatedTime = formatDate(new Date())
+            reactive.checked = true;
+        }
+        return data;
+    }
+    _afterLogin() {
+        let { checked } = this.reactive;
+        if (!checked) {
+            this._ifUpdate()
+        }
+    }
+    _view() {
+        let { context, _signOut, userTabId, classes, api } = this;
+        let { $h, $reactive, $resolveComponent, $toRaw, $Message, $Notice } = context;
+        let reactive: Reactive = $reactive({
+            show: true,
+            loading: false,
+            checked: false,
+            exists: false,
+            updatedTime: '',
+            shop: {
+                shop_id: '',
+                shop_name: '',
+                shop_image: '',
+                platform: Platform.小红书,
+                importOrigin: ImportOrigin.插件,
+                platformOrigin: PlatformOrigin.蒲公英,
+                corp_daren_count: null, // 月合作买手数
+                shopScore: null,
+                saleQuantity: null,
+                fansNum: null,
+                liveOverview: null,
+                categories: [],
+                wx: '',
+                phone: '',
+                person: ''
+            },
+        })
+        this.reactive = reactive;
+        context.renderFunctionMap.door = function () {
+            return reactive.show ? null : $h('img', {
+                src: context.src, class: classes.trigger, onClick() {
+                    reactive.show = true;
+                }
+            })
+        }
+        context.renderFunctionMap.drawer = function () {
+            const Drawer = $resolveComponent('Drawer');
+            const Icon = $resolveComponent('Icon');
+            const Collapse = $resolveComponent('Collapse');
+            const Panel = $resolveComponent('Panel');
+            const Image = $resolveComponent('Image');
+            const Button = $resolveComponent('Button');
+            const Spin = $resolveComponent('Spin');
+            const Tag = $resolveComponent('Tag');
+            const Result = $resolveComponent('Result');
+            let { shop, checked, exists, updatedTime } = reactive;
+            return $h(Drawer, {
+                width: 500,
+                mask: false, modelValue: reactive.show, 'onUpdate:modelValue'(value: boolean) {
+                    reactive.show = value;
+                }
+            }, {
+                header() {
+                    let todoList = [$h('img', { src: context.src/*'https://cdn.red.gaoq.com/resource/logo.png'*/, class: classes.gaoqu })]
+                    if (userTabId.user) {
+                        todoList.push(userTabId.user.name + '(' + userTabId.user.id + ')')
+                        todoList.push($h('span', {
+                            onClick: _signOut
+                        },
+                            [
+                                $h(Icon, { type: 'md-exit', size: 13 }),
+                                '登出'
+                            ]))
+                    } else if (userTabId.tabId) {
+                        todoList.push($h('a', { href: userTabId.href, target: '_blank' }, [
+                            $h(Icon, { type: 'md-contact', size: 13 }),
+                            '登录'
+                        ]))
+                    }
+                    return todoList;
+                },
+                default() {
+                    if (userTabId.user) {
+                        let todoList = [
+                            $h(Collapse, {
+                                modelValue: ['shop', 'live']
+                            }, [
+                                $h(Panel, { name: 'shop' }, {
+                                    content() {
+                                        let todoList = [
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, 'ID'),
+                                                $h('span', { class: 'value' }, {
+                                                    default() {
+                                                        return shop.shop_id;
+                                                    }
+                                                })
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, '名称'),
+                                                $h('span', { class: 'value' }, {
+                                                    default() {
+                                                        return shop.shop_name;
+                                                    }
+                                                })
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, 'Logo'),
+                                                shop.shop_image ? $h(Image, { src: shop.shop_image, fit: "contain", preview: true, class: classes.img }) : ''
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, '内容类目'),
+                                                shop.categories.map(category => $h(Tag, { color: randomColor(), size: 'small' }, category))
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, '联系人'),
+                                                $h('span', { class: 'value' }, {
+                                                    default() {
+                                                        return shop.person;
+                                                    }
+                                                })
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, '手机号'),
+                                                $h('span', { class: 'value' }, {
+                                                    default() {
+                                                        return shop.phone;
+                                                    }
+                                                })
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, '微信'),
+                                                $h('span', { class: 'value' }, {
+                                                    default() {
+                                                        return shop.wx;
+                                                    }
+                                                })
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, '月合作达人数'),
+                                                $h('span', { class: 'value' }, {
+                                                    default() {
+                                                        return shop.corp_daren_count;
+                                                    }
+                                                })
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, '粉丝数'),
+                                                $h('span', { class: 'value' }, {
+                                                    default() {
+                                                        return shop.fansNum;
+                                                    }
+                                                })
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, '已售'),
+                                                $h('span', { class: 'value' }, {
+                                                    default() {
+                                                        return shop.saleQuantity;
+                                                    }
+                                                })
+                                            ]),
+                                            $h('div', { class: 'item' }, [
+                                                $h('span', { class: 'label' }, '评分'),
+                                                $h('span', { class: 'value' }, {
+                                                    default() {
+                                                        if (shop.shopScore) {
+                                                            let { sellerScore, itemScore, replyRateScore, deliveryScore } = shop.shopScore;
+                                                            return `店铺:${sellerScore}, 商品:${itemScore}, 咨询:${replyRateScore}, 物流:${deliveryScore}`
+                                                        }
+                                                        return '';
+                                                    }
+                                                })
+                                            ]),
+                                        ];
+                                        return $h('div', { class: classes.flexContainer }, todoList)
+                                    },
+                                    default() {
+                                        return ['店铺',
+                                            $h('span', { class: exists ? classes.info : classes.success }, exists ? `已存在相同店铺` : '可入库')
+                                        ]
+                                    }
+                                }),
+                                $h(Panel, { name: 'live' }, {
+                                    content() {
+                                        let todoList: any = []
+                                        if (shop.liveOverview) {
+                                            let {
+                                                live_cps_goods_cnt,
+                                                live_cps_goods_sell_cnt,
+                                                live_cps_per_price,
+                                                live_cps_relation_cnt,
+                                                max_age_portrait,
+                                                max_age_portrait_rate,
+                                                max_customer_portrait,
+                                                max_customer_portrait_rate,
+                                                max_gender_portrait,
+                                                max_gender_portrait_rate
+                                            } = shop.liveOverview;
+                                            todoList.push(
+                                                $h('div', { class: 'item' }, [
+                                                    $h('span', { class: 'label' }, '直播销量'),
+                                                    $h('span', { class: 'value' }, {
+                                                        default() {
+                                                            return live_cps_goods_sell_cnt;
+                                                        }
+                                                    })
+                                                ]),
+                                                $h('div', { class: 'item' }, [
+                                                    $h('span', { class: 'label' }, '直播客单价'),
+                                                    $h('span', { class: 'value' }, {
+                                                        default() {
+                                                            return live_cps_per_price.toFixed(2);
+                                                        }
+                                                    })
+                                                ]),
+                                                $h('div', { class: 'item' }, [
+                                                    $h('span', { class: 'label' }, '直播商品数'),
+                                                    $h('span', { class: 'value' }, {
+                                                        default() {
+                                                            return live_cps_goods_cnt;
+                                                        }
+                                                    })
+                                                ]),
+                                                $h('div', { class: 'item' }, [
+                                                    $h('span', { class: 'label' }, '用户下单人群'),
+                                                    $h('span', { class: 'value' }, {
+                                                        default() {
+                                                            return (Number(max_customer_portrait_rate) * 100).toFixed(2) + '%' + max_customer_portrait;
+                                                        }
+                                                    })
+                                                ]),
+                                                $h('div', { class: 'item' }, [
+                                                    $h('span', { class: 'label' }, '年龄'),
+                                                    $h('span', { class: 'value' }, {
+                                                        default() {
+                                                            return (Number(max_age_portrait_rate) * 100).toFixed(2) + '%' + max_age_portrait;
+                                                        }
+                                                    })
+                                                ]),
+                                                $h('div', { class: 'item' }, [
+                                                    $h('span', { class: 'label' }, '性别'),
+                                                    $h('span', { class: 'value' }, {
+                                                        default() {
+                                                            return (Number(max_gender_portrait_rate) * 100).toFixed(2) + '%' + ('1' == max_gender_portrait ? '女' : '男');
+                                                        }
+                                                    })
+                                                ]),
+                                                $h('div', { class: 'item' }, [
+                                                    $h('span', { class: 'label' }, '合作买手'),
+                                                    $h('span', { class: 'value' }, {
+                                                        default() {
+                                                            return live_cps_relation_cnt
+                                                        }
+                                                    })
+                                                ]),
+
+                                            );
+                                        }
+
+                                        return $h('div', { class: classes.flexContainer }, todoList)
+                                    },
+                                    default() {
+                                        return '30天商家数据'
+                                    }
+                                })
+                            ]),
+                            $h('div', { class: classes.buttonContainer }, $h(Button, {
+                                disabled: exists,
+                                long: true, loading: reactive.loading,
+                                type: 'primary',
+                                async onClick() {
+                                    reactive.loading = true;
+                                    let params = {
+                                        opId: userTabId.user.id,
+                                        token: userTabId.user.token,
+                                        shop: $toRaw(reactive.shop),
+                                    }
+                                    let { code, data } = await api.shop.import(params)
+                                    if (code == 0) {
+                                        $Message.success('成功入库')
+                                        reactive.exists = true;
+                                    }
+                                    reactive.loading = false;
+                                }
+                            },
+                                exists ? `更新于${updatedTime}` :
+                                    '入库'))
+                        ]
+                        if (!checked) {
+                            todoList.push($h(Spin, { fix: true }))
+                        }
+                        return todoList;
+                    } else {
+                        return $h(Result, { type: 'warning', title: '请先登录', class: classes.marginTop }, {
+                            actions() {
+                                return $h(Button, {
+                                    type: 'success', onClick() {
+                                        window.open(userTabId.href, '_blank')
+                                    }
+                                }, '马上登录')
+                            }
+                        })
+                    }
+
+                }
+            })
+        }
+    }
+
+}
