@@ -1,18 +1,20 @@
-import { Context, Options } from "../handler.interface";
-import { For, Msg, Aim } from "../enum";
-import { CollectHandler } from '../handler.collect'
-import { content2Background, patchFrom } from "../bridge";
-import { objectToList, tryDo, getDomText, getAuthorContentData } from "../util";
-import { text2Int } from "../filter";
-import  { AxiosResponse } from 'axios';
+import {Context, Options} from "../handler.interface";
+import {For, Msg, Aim} from "../enum";
+import {CollectHandler} from '../handler.collect'
+import {content2Background, patchFrom} from "../bridge";
+import {objectToList, tryDo, getDomText, getAuthorContentData} from "../util";
+import {text2Int} from "../filter";
+import {AxiosResponse} from 'axios';
 
 export class XtResourceHandler extends CollectHandler {
     constructor(context: Context, option: Options) {
         super(context, option);
     }
+
     _getElClass() {
         return ".top-info .link-index";
     }
+
     async _parser() {
         // if (this.options.forGaoqu) {
         //     const data = await me.collectMainData(vm, locationData);
@@ -21,12 +23,13 @@ export class XtResourceHandler extends CollectHandler {
         // } else {
         //     me.collectOtherData(vm, locationData.xtId);
         const data = await this.collectMainData();
-        await this.collectOtherData();
+        // await this.collectOtherData();
         return data;
         // return this.collectMainData();
     }
+
     _formMeta(form: any) {
-        let { options, reactive } = this;
+        let {options, reactive} = this;
         reactive.title = `资源基本信息(${options.version})`;
         const priceSubList = objectToList(form.price, this.render);
         const dataOverviewSubList = objectToList(form.dataOverview, this.render);
@@ -122,8 +125,9 @@ export class XtResourceHandler extends CollectHandler {
             },
         ];
     }
+
     _makeParams(form: any) {
-        const { rank, price, capability, dataOverview, ...others } = form
+        const {rank, price, capability, dataOverview, ...others} = form
         return {
             ...others,
             rank: JSON.stringify(rank),
@@ -136,8 +140,9 @@ export class XtResourceHandler extends CollectHandler {
     _validateSubmit(form: any) {
         return true;
     }
+
     async _ending(form: any) {
-        const { tag, gaoqId, fromTabId, forGaoqu, fromId } = this.options;
+        const {tag, gaoqId, fromTabId, forGaoqu, fromId} = this.options;
         if (fromTabId && gaoqId && fromTabId > 0 && forGaoqu == For.爬取星图等级) {
             let res = "博主不存在或网络错误"
             if (form.mediaId) {
@@ -176,7 +181,7 @@ export class XtResourceHandler extends CollectHandler {
         } else if (fromTabId && fromTabId > 0 && forGaoqu == For.主页自动入库) {
             console.log("this", this);
 
-            let { id, token } = this.userTabId.user;
+            let {id, token} = this.userTabId.user;
             form.opId = id;
             console.log("token", token);
 
@@ -194,7 +199,7 @@ export class XtResourceHandler extends CollectHandler {
                 patchFrom(
                     {
                         id: gaoqId,
-                        res: { form, data: res.data, error },
+                        res: {form, data: res.data, error},
                         toTabId: fromTabId,
                         toId: fromId,
                         msg:
@@ -207,6 +212,7 @@ export class XtResourceHandler extends CollectHandler {
             );
         }
     }
+
     _validateAuto(form: any): boolean {
         if (!form.mediaId || !form.version) {
             this.context.$Notice.error({
@@ -217,6 +223,7 @@ export class XtResourceHandler extends CollectHandler {
         }
         return true;
     }
+
     async collectMainData() {
         let mediaId = '';
         let uid = '';
@@ -229,7 +236,7 @@ export class XtResourceHandler extends CollectHandler {
         let price = {};
         let data: any = {};
         let customTags = [];
-        const { clean, xtId, platformSite } = this.locationData();
+        const {clean, xtId, platformSite} = this.locationData();
         const page = document.querySelector(
             '.author-base-info .other-author-pages'
         );
@@ -309,10 +316,10 @@ export class XtResourceHandler extends CollectHandler {
             data.fieldTags = fieldTags;
             data.contentTags = contentTags;
             data.patch = busGetContact;
-            data.dataOverview = { ...dataOverview, ...busGetContact };
+            data.dataOverview = {...dataOverview, ...busGetContact};
             data.subContentTags = subContentTags;
             data.subFieldTags = subFieldTags;
-            data.capability = { ...cepAndCpmMap, ...authorContent };
+            data.capability = {...cepAndCpmMap, ...authorContent};
             // 将capability 数据直接传给 collectOtherData 方法
             // collectOtherData 方法 每收集一次数据都会同步到 vm.resourceXt
             // collectOtherData 方法 异步时 库内会在extension_import或者resouce表里面存在该资源，collectOtherData 方法按批次量更新
@@ -332,11 +339,12 @@ export class XtResourceHandler extends CollectHandler {
         return data;
 
     }
+
     locationData() {
         const clean = '抖音id修正';
         const href = location.href;
         const xtId = href.match(/\/douyin\/(\d+)/)![1];
-        let { origin, pathname } = window.location;
+        let {origin, pathname} = window.location;
         let platformSite = origin + pathname;
         const data = {
             xtId,
@@ -346,6 +354,7 @@ export class XtResourceHandler extends CollectHandler {
         console.log('locationData ok', data);
         return data;
     }
+
     async baseBusData() {
         const bus = this.context.$bus;
         const baseInfoPromise: any = bus.subscribe(
@@ -369,10 +378,12 @@ export class XtResourceHandler extends CollectHandler {
                 return body.hasOwnProperty('self_intro') ? body : false;
             }
         );
+
         const [
             baseInfoBody,
             marketInfoBody,
             introduceBody,
+
         ] = await Promise.all([
             baseInfoPromise,
             marketingInfoPromise,
@@ -394,7 +405,7 @@ export class XtResourceHandler extends CollectHandler {
             avatar_uri,
             follower,
         } = baseInfoBody;
-        console.log("basePort ok", { baseInfoBody, marketInfoBody, introduceBody });
+        console.log("basePort ok", {baseInfoBody, marketInfoBody, introduceBody});
         const mediaId = unique_id;
         const name = nick_name;
         const shortId = short_id;
@@ -433,6 +444,7 @@ export class XtResourceHandler extends CollectHandler {
         console.log('baseBusData ok', data);
         return data;
     }
+
     async busData() {
         const bus = this.context.$bus;
         let data = {}
@@ -469,22 +481,46 @@ export class XtResourceHandler extends CollectHandler {
                 }
             );
 
-            // 数据概览，后续额外抓取数据可以用时，这里可以删掉
-
+            // 数据概览
+            // 最新15个视频表现柱状图
+            const last15VideoPromise: any = bus.subscribe(
+                /\/api\/author\/get_author_show_items_v2/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
+            // 星图指数
+            const xtIndexPromise: any = bus.subscribe(
+                /\/api\/data_sp\/get_author_link_info/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
             const [
                 authorContent1m,
                 authorVideoDistribution,
+                last15VideoBody,
+                xtIndexBody
             ] = await Promise.all([
                 authorContent1mPromise,
                 authorVideoDistributionPromise,
+                last15VideoPromise,
+                xtIndexPromise
+
             ]);
-            const { video_content_distribution } = authorVideoDistribution;
+            console.log("busData ok", {last15VideoBody, xtIndexPromise});
+
+            const {video_content_distribution} = authorVideoDistribution;
             tabList[1].click();
             data = {
                 authorContent1m,
                 // authorBusinessCapabilitiesNoLimit: {},
                 // authorBusinessCapabilitiesNoLimit: bus.parseBody(authorBusinessCapabilitiesNoLimit),
                 video_content_distribution,
+                last15VideoBody,
+                xtIndexBody
             };
         }
         // }
@@ -492,8 +528,9 @@ export class XtResourceHandler extends CollectHandler {
         console.log('busData ok', data);
         return data;
     }
+
     async busGetContact() {
-        const { $bus, $Message } = this.context;
+        const {$bus, $Message} = this.context;
         return new Promise(async (resolve, reject) => {
             const data: any = {}
             setTimeout(() => {
@@ -511,7 +548,7 @@ export class XtResourceHandler extends CollectHandler {
                     }
                 );
             } catch (error) {
-                $Message.error({ content: "星图新增抓取数据，需重新安装插件" })
+                $Message.error({content: "星图新增抓取数据，需重新安装插件"})
                 console.log("contactPromise", contactPromise, error);
             }
             const [
@@ -521,10 +558,10 @@ export class XtResourceHandler extends CollectHandler {
             ]);
             console.log("contact", contact);
             if (contact) {
-                const { card_info } = contact;
+                const {card_info} = contact;
                 // console.log("card_info", card_info);
                 if (card_info) {
-                    const { wechat, email } = card_info
+                    const {wechat, email} = card_info
                     // let wx = card_info.contact
                     // console.log("card_info.contact", card_info.contact);
                     data.wxId = wechat
@@ -537,6 +574,7 @@ export class XtResourceHandler extends CollectHandler {
             resolve(data)
         })
     }
+
     dom2Data() {
         let list = getDomText('.author-page-info .link-index').split('\n');
         const monthConnectCount = text2Int(list[1]);
@@ -548,6 +586,7 @@ export class XtResourceHandler extends CollectHandler {
         console.log('dom2Data ok', data);
         return data;
     }
+
     dataHandle(
         price_info: any,
         tags_relation: any,
@@ -560,10 +599,12 @@ export class XtResourceHandler extends CollectHandler {
         const {
             authorContent1m,
             video_content_distribution,
+            last15VideoBody,
+            xtIndexBody
         } = busData;
         console.log("authorContent1m", authorContent1m);
 
-        const authorContent = this.getAuthorContent({ authorContent1m })
+        const authorContent = this.getAuthorContent({authorContent1m})
         let price = {};
         if (price_info && price_info.length > 0) {
             const priceMap: any = {};
@@ -635,8 +676,56 @@ export class XtResourceHandler extends CollectHandler {
         }
 
 
-
         console.log("cepAndCpmMap", cepAndCpmMap);
+        // 最新15个视频表现柱状图数据
+        console.log("last15VideoBody", last15VideoBody);
+        const {latest_item_info, latest_star_item_info} = last15VideoBody;
+
+        const calculateMin = (arr: number[]): number => Math.min(...arr);
+        const calculateMax = (arr: number[]): number => Math.max(...arr);
+        const calculateAverage = (arr: number[]): number => arr.reduce((a, b) => a + b, 0) / arr.length;
+        const printStats = (label: string, data: number[]) => {
+            console.log(`最低${label}:`, calculateMin(data), "万");
+            console.log(`最高${label}:`, calculateMax(data), "万");
+            console.log(`${label}均值:`, calculateAverage(data).toFixed(2), "万");
+        };
+
+// 计算热门视频百分比的方法
+        const calculateHotVideoPercentage = (isHotCount: number, totalCount: number): string => {
+            const percentage = (isHotCount / totalCount) * 100;
+            return percentage.toFixed(2) + "%";
+        };
+        const processVideoStats = (videoInfo: any[], label: string) => {
+            const plays = videoInfo.map(video => video.play / 10000);
+            const likes = videoInfo.map(video => video.like / 10000);
+            const comments = videoInfo.map(video => video.comment / 10000);
+            const shares = videoInfo.map(video => video.share / 10000);
+            const isHotCount = videoInfo.filter(video => video.is_hot).length;
+
+            printStats("播放量", plays);
+            printStats("点赞量", likes);
+            printStats("评论量", comments);
+            printStats("转发量", shares);
+
+            console.log(`爆量视频百分比:`, calculateHotVideoPercentage(isHotCount, videoInfo.length));
+        };
+
+        processVideoStats(latest_item_info, "个人视频");
+
+        processVideoStats(latest_star_item_info, "星图视频");
+
+        // 星图指数数据
+
+        const xtValues: number[] = [
+            xtIndexBody.cooperate_index.value,
+            xtIndexBody.cp_index.value,
+            xtIndexBody.link_convert_index.value,
+            xtIndexBody.link_shopping_index.value,
+            xtIndexBody.link_spread_index.value,
+            xtIndexBody.link_star_index.value,
+        ];
+        console.log("星图指标数据：", xtValues)
+
         const data = {
             rank,
             price,
@@ -651,6 +740,7 @@ export class XtResourceHandler extends CollectHandler {
         console.log('dataHandle ok', data);
         return data;
     }
+
     getAuthorContent(target: any) {
         const authorContent: any = {}
         const authorContentMap: any = {
@@ -677,16 +767,16 @@ export class XtResourceHandler extends CollectHandler {
 
         Object.keys(target).forEach(key => {
             if (authorContentMap[key]) {
-                const { prefix, suffix } = authorContentMap[key]
+                const {prefix, suffix} = authorContentMap[key]
                 const item = target[key];
                 if (item) {
-                    const { play_over_rate, interact_rate, item_rate } = target[key]
+                    const {play_over_rate, interact_rate, item_rate} = target[key]
                     authorContent[prefix + "wblOvertake" + suffix] = getAuthorContentData(play_over_rate, "overtake")
                     authorContent[prefix + "wblValue" + suffix] = getAuthorContentData(play_over_rate, "value")
                     authorContent[prefix + "hdlOvertake" + suffix] = getAuthorContentData(interact_rate, "overtake")
                     authorContent[prefix + "hdlValue" + suffix] = getAuthorContentData(interact_rate, "value")
                     if (item_rate) {
-                        const { play_mid, item_num } = item_rate
+                        const {play_mid, item_num} = item_rate
                         authorContent[prefix + "bflzwsOvertake" + suffix] = getAuthorContentData(play_mid, "overtake")
                         authorContent[prefix + "bflzwsValue" + suffix] = getAuthorContentData(play_mid, "value")
                     }
@@ -701,6 +791,7 @@ export class XtResourceHandler extends CollectHandler {
 
         return authorContent;
     }
+
     getAuthorContentData(target: any, key: any, multiplier = 1) {
         if (target) {
             const value = target[key];
@@ -716,18 +807,20 @@ export class XtResourceHandler extends CollectHandler {
         }
         return null;
     }
+
     contentTypeHandle(contentTypeList: any) {
         const map: any = {};
         contentTypeList.forEach((item: any) => {
-            const { name, proportion } = item;
+            const {name, proportion} = item;
             map[name] = proportion;
         });
         return map;
     }
+
     getCpeAndCpm(target: any) {
         let cepAndCpmMap: any = {}
         if (target) {
-            const { expect_cpe, expect_cpm } = target;
+            const {expect_cpe, expect_cpm} = target;
             if (expect_cpe) {
                 cepAndCpmMap = {
                     cpe120: getAuthorContentData(expect_cpe, 'cpe_1_20'),
@@ -746,10 +839,10 @@ export class XtResourceHandler extends CollectHandler {
 
     private async collectOtherData() {
         const resultAuthorContent: any = {}
-        const { clean, xtId, platformSite } = this.locationData();
+        const {clean, xtId, platformSite} = this.locationData();
         // 1.内容表现
 
-        const authorContentMap: Record<string, { url: string; content: string; prefix:string; suffix:string }> = {
+        const authorContentMap: Record<string, { url: string; content: string; prefix: string; suffix: string }> = {
             authorContentXtAll1m: {
                 url: `https://www.xingtu.cn/gw/api/data_sp/get_author_spread_info?o_author_id=${xtId}&platform_source=1&platform_channel=1&range=2&type=2&only_assign=true`,
                 content: '近30天星图视频内容表现 提取成功',
@@ -763,41 +856,50 @@ export class XtResourceHandler extends CollectHandler {
                 suffix: '3m'
             },
         };
+
+        // await wait(1500)
         // 数据概览 - 内容表现
         for (const key of Object.keys(authorContentMap)) {
-            tryDo(5000,() => {
-                const { prefix, suffix } = authorContentMap[key]
-                try {
-                    const { url, content } = authorContentMap[key];
-                    const authorContent: AxiosResponse<any> = this.api.ajax.get(url);
 
-                    const handleMap: Record<string, any> = {};
+            const {prefix, suffix} = authorContentMap[key]
+            try {
+                const {url, content} = authorContentMap[key];
+                const authorContent: AxiosResponse<any> = await this.api.ajax.get(url);
 
-                    if (authorContent.hasOwnProperty('base_resp')) {
-                        handleMap[key] = authorContent;
-                        console.log("authorContent==============",authorContent)
-                        const { play_over_rate, interact_rate, item_rate } = handleMap[key]
-                        resultAuthorContent[prefix + "wblOvertake" + suffix] = getAuthorContentData(play_over_rate, "overtake")
-                        resultAuthorContent[prefix + "wblValue" + suffix] = getAuthorContentData(play_over_rate, "value")
-                        resultAuthorContent[prefix + "hdlOvertake" + suffix] = getAuthorContentData(interact_rate, "overtake")
-                        resultAuthorContent[prefix + "hdlValue" + suffix] = getAuthorContentData(interact_rate, "value")
-                        if (item_rate) {
-                            const { play_mid, item_num } = item_rate
-                            resultAuthorContent[prefix + "bflzwsOvertake" + suffix] = getAuthorContentData(play_mid, "overtake")
-                            resultAuthorContent[prefix + "bflzwsValue" + suffix] = getAuthorContentData(play_mid, "value")
-                        }
-                        resultAuthorContent[prefix + "fbzp" + suffix] = getAuthorContentData(authorContent, "item_num")
-                        resultAuthorContent[prefix + "pjsc" + suffix] = getAuthorContentData(authorContent, "avg_duration")
-                        resultAuthorContent[prefix + "pjdz" + suffix] = getAuthorContentData(authorContent, "like_avg")
-                        resultAuthorContent[prefix + "pjpl" + suffix] = getAuthorContentData(authorContent, "comment_avg")
-                        resultAuthorContent[prefix + "pjzf" + suffix] = getAuthorContentData(authorContent, "share_avg")
+                await tryDo(5000, () => {
+                    return authorContent.hasOwnProperty('base_resp');
+                });
+                const handleMap: Record<string, any> = {};
+
+                if (authorContent.hasOwnProperty('base_resp')) {
+                    handleMap[key] = authorContent;
+                    console.log("authorContent==============", authorContent)
+                    const {play_over_rate, interact_rate, item_rate} = handleMap[key]
+                    resultAuthorContent[prefix + "wblOvertake" + suffix] = getAuthorContentData(play_over_rate, "overtake")
+                    resultAuthorContent[prefix + "wblValue" + suffix] = getAuthorContentData(play_over_rate, "value")
+                    resultAuthorContent[prefix + "hdlOvertake" + suffix] = getAuthorContentData(interact_rate, "overtake")
+                    resultAuthorContent[prefix + "hdlValue" + suffix] = getAuthorContentData(interact_rate, "value")
+                    if (item_rate) {
+                        const {play_mid, item_num} = item_rate
+                        resultAuthorContent[prefix + "bflzwsOvertake" + suffix] = getAuthorContentData(play_mid, "overtake")
+                        resultAuthorContent[prefix + "bflzwsValue" + suffix] = getAuthorContentData(play_mid, "value")
                     }
-                } catch (error) {
-                    this.api.baojing({ tag: '内容表现', message: 'api/data_sp/get_author_spread_info', site: window.location.href });
+                    resultAuthorContent[prefix + "fbzp" + suffix] = getAuthorContentData(authorContent, "item_num")
+                    resultAuthorContent[prefix + "pjsc" + suffix] = getAuthorContentData(authorContent, "avg_duration")
+                    resultAuthorContent[prefix + "pjdz" + suffix] = getAuthorContentData(authorContent, "like_avg")
+                    resultAuthorContent[prefix + "pjpl" + suffix] = getAuthorContentData(authorContent, "comment_avg")
+                    resultAuthorContent[prefix + "pjzf" + suffix] = getAuthorContentData(authorContent, "share_avg")
                 }
-            })
+            } catch (error) {
+                this.api.baojing({
+                    tag: '内容表现',
+                    message: 'api/data_sp/get_author_spread_info',
+                    site: window.location.href
+                });
+            }
         }
         console.log("====================resultAuthorContent====================", resultAuthorContent)
+
         return resultAuthorContent;
     }
 }
