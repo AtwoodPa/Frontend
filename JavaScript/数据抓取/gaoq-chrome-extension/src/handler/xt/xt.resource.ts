@@ -460,9 +460,31 @@ export class XtResourceHandler extends CollectHandler {
         });
 
 
+
         if (tabList && tabList[2]) {
             console.log("tabList[2]", 1);
-            tabList[2].click();
+            await tryDo(1500, () => {
+                tabList[2].click();
+                return true;
+            });
+
+            await tryDo(1500, async () => {
+                tabList[3].click();
+                // 连接用户 - 连接用户画像tab
+                const radioGroup: any = await tryDo(1500, () => {
+                    const radioGroupDom =  document.querySelector('.page-right .tabs-content .title-wrapper .el-radio-group[role="radiogroup"]');
+                    if (radioGroupDom) {
+                        const radioButtons = radioGroupDom.children;
+                        if (radioButtons && radioButtons[1]) {
+                            return radioButtons;
+                        }
+                    }
+                    return false
+                });
+                radioGroup[1].click()
+
+                return true;
+            });
             // 预期cpm cpe
             const authorContent1mPromise: any = bus.subscribe(
                 /\/api\/data_sp\/get_author_spread_info/,
@@ -498,19 +520,54 @@ export class XtResourceHandler extends CollectHandler {
                     return body.hasOwnProperty('base_resp') ? body : false;
                 }
             );
+            // 受众标签类型 - 连接用户数
+            const connectUsersPromise: any = bus.subscribe(
+                /\/api\/data_sp\/author_link_struct/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
+            // 受众标签类型 - 连接用户画像 - 观众画像
+            const audiencePortraitPromise: any = bus.subscribe(
+                /\/api\/data_sp\/author_audience_distribution/,
+                (rs: any) => {
+                    console.log("author_audience_distribution - Response:", rs);
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
+            // 受众标签类型 - 连接用户画像 - 粉丝画像
+            const fansPortraitPromise: any = bus.subscribe(
+                /\/api\/data_sp\/get_author_fans_distribution/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
             const [
                 authorContent1m,
                 authorVideoDistribution,
                 last15VideoBody,
-                xtIndexBody
+                xtIndexBody,
+                connectUsersBody,
+                audiencePortraitBody,
+                fansPortraitBody,
             ] = await Promise.all([
                 authorContent1mPromise,
                 authorVideoDistributionPromise,
                 last15VideoPromise,
-                xtIndexPromise
+                xtIndexPromise,
+                connectUsersPromise,
+                audiencePortraitPromise,
+                fansPortraitPromise
 
             ]);
             console.log("busData ok", {last15VideoBody, xtIndexPromise});
+
+            console.log("========>>> data_sp connectUsersPromise : " , connectUsersBody)
+            console.log("========>>> data_sp audiencePortraitBody : " , audiencePortraitBody)
+            console.log("========>>> data_sp fansPortraitBody : " , fansPortraitBody)
 
             const {video_content_distribution} = authorVideoDistribution;
             tabList[1].click();
