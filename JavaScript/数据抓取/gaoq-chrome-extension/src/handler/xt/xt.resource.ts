@@ -482,9 +482,9 @@ export class XtResourceHandler extends CollectHandler {
                     return false
                 });
                 radioGroup[1].click()
-
                 return true;
             });
+
             // 预期cpm cpe
             const authorContent1mPromise: any = bus.subscribe(
                 /\/api\/data_sp\/get_author_spread_info/,
@@ -577,10 +577,12 @@ export class XtResourceHandler extends CollectHandler {
                 // authorBusinessCapabilitiesNoLimit: bus.parseBody(authorBusinessCapabilitiesNoLimit),
                 video_content_distribution,
                 last15VideoBody,
-                xtIndexBody
+                xtIndexBody,
+                connectUsersBody,
+                audiencePortraitBody,
+                fansPortraitBody
             };
         }
-        // }
 
         console.log('busData ok', data);
         return data;
@@ -657,7 +659,10 @@ export class XtResourceHandler extends CollectHandler {
             authorContent1m,
             video_content_distribution,
             last15VideoBody,
-            xtIndexBody
+            xtIndexBody,
+            connectUsersBody,
+            audiencePortraitBody,
+            fansPortraitBody
         } = busData;
         console.log("authorContent1m", authorContent1m);
 
@@ -734,10 +739,9 @@ export class XtResourceHandler extends CollectHandler {
 
 
         console.log("cepAndCpmMap", cepAndCpmMap);
-        // 最新15个视频表现柱状图数据
+        // 2、最新15个视频表现柱状图数据
         console.log("last15VideoBody", last15VideoBody);
         const {latest_item_info, latest_star_item_info} = last15VideoBody;
-
         const calculateMin = (arr: number[]): number => Math.min(...arr);
         const calculateMax = (arr: number[]): number => Math.max(...arr);
         const calculateAverage = (arr: number[]): number => arr.reduce((a, b) => a + b, 0) / arr.length;
@@ -746,8 +750,6 @@ export class XtResourceHandler extends CollectHandler {
             console.log(`最高${label}:`, calculateMax(data), "万");
             console.log(`${label}均值:`, calculateAverage(data).toFixed(2), "万");
         };
-
-// 计算热门视频百分比的方法
         const calculateHotVideoPercentage = (isHotCount: number, totalCount: number): string => {
             const percentage = (isHotCount / totalCount) * 100;
             return percentage.toFixed(2) + "%";
@@ -768,11 +770,38 @@ export class XtResourceHandler extends CollectHandler {
         };
 
         processVideoStats(latest_item_info, "个人视频");
-
         processVideoStats(latest_star_item_info, "星图视频");
+        // 3、受众标签类型
+        // const monthlyConnectedUsers = (connectUsersBody.link_struct['5'] as any).value;// 月连接用户数
+        const understandUsers = connectUsersBody.link_struct['1'].value; // 了解
 
-        // 星图指数数据
+        const interestUsers = connectUsersBody.link_struct['2'].value;// 兴趣
 
+        const likeUsers = connectUsersBody.link_struct['3'].value; // like
+
+        const followUsers = connectUsersBody.link_struct['4'].value;// 追随
+
+        const monthlyConnectedUsers = connectUsersBody.link_struct['5'].value;// 月连接用户数
+        // 使用 reduce 获取最大 proportion 和对应的 value
+        // @ts-ignore
+        const { value: maxValue } = Object.values(connectUsersBody.link_struct)
+            .slice(0, 4)
+            .reduce((acc, item) => {
+                // @ts-ignore
+                return item.proportion > acc.proportion ? { proportion: item.proportion, value: item.value } : acc;
+            }, { proportion: -Infinity, value: 0 });
+        const monthlyDeepUsers = monthlyConnectedUsers - maxValue;// 月深度用户数
+
+        console.log("月连接用户数:", monthlyConnectedUsers);
+        console.log("月深度用户数:", monthlyDeepUsers);
+        //TODO 月粉丝增长量 - 待定 240920
+        console.log("了解 用户数:", understandUsers);
+        console.log("感兴趣用户数:", interestUsers);
+        console.log("喜欢 用户数:", likeUsers);
+        console.log("追随 用户数:", followUsers);
+
+
+        // 4、星图指数数据
         const xtValues: number[] = [
             xtIndexBody.cooperate_index.value,
             xtIndexBody.cp_index.value,
@@ -782,6 +811,8 @@ export class XtResourceHandler extends CollectHandler {
             xtIndexBody.link_star_index.value,
         ];
         console.log("星图指标数据：", xtValues)
+
+        console.log("333333333",connectUsersBody, audiencePortraitBody, fansPortraitBody)
 
         const data = {
             rank,

@@ -35,7 +35,7 @@ export default function (version: string) {
         'api/user/author_options',
         'api/data_sp/author_video_distribution',
         'api/data_sp/get_author_spread_info',
-        'api/data_sp/author_link_struct',
+        'api/data_sp/author_link_struct',// 连接用户 - 连接用户分布数据
         'api/solar/kol/dataV3/dataSummary',
         'api/data_sp/author_touch_distribution',
         'draco/distributor-square/distributor/cooperative',
@@ -64,7 +64,10 @@ export default function (version: string) {
         "v2/user/me",
         "www.douyin.com/user/",
         "api/demander/grade_info",
-        "api/solar/user/info"
+        "api/solar/user/info",
+        "api/author/get_author_show_items_v2", // 内容表现 - 数据概览（个人视频、星图视频）
+        "api/data_sp/author_audience_distribution", // 连接用户画像 - 观众画像
+        "api/data_sp/get_author_fans_distribution", // 连接用户画像 - 粉丝画像
     ]
     // 当whiteList发生变化了，则打开下面代码
     let whiteListChanged = false;
@@ -129,6 +132,7 @@ export default function (version: string) {
     match = window.location.search.match(/[&?]name=([^&]*)/)
     options.name = match ? decodeURIComponent(match[1]) : 0;
 
+    // @ts-ignore
     let context: Context = window['_context']
     console.log('context', context, options, href)
     // chrome-extension://adgdpkfmjcopkackgpghlpjboimlkinh/popup.html
@@ -137,8 +141,8 @@ export default function (version: string) {
         return new PopupHandler(context, options);
     }
     else if (/http:\/\/op\.gaoq\.com\//.test(
-        href
-    ) ||
+            href
+        ) ||
         /http:\/\/localhost:8088\//.test(href)) {
         options.tag = Tag.OP;
         return new GaoquIndexHandler(context, options);
