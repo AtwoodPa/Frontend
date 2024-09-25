@@ -13,6 +13,7 @@ export class PgyResourceHandler extends CollectHandler {
     }
     async _parser() {
         let { uid, site, platformSite } = locationData();
+        // 获取基础数据 basePortData获取data返回数据
         const {
             sex,
             mcn,
@@ -27,7 +28,10 @@ export class PgyResourceHandler extends CollectHandler {
             featureTags,
             contentTags,
             personalTags,
-            subContentTags } = await this.basePortData(uid)
+            subContentTags }
+            = await this.basePortData(uid)
+
+        // 获取笔记数据 portNoteData
         let portNoteData = await this.portNoteData(uid);
         const { fansMap } = portNoteData;
         let { capability, dataOverview, otherData } = await this.portLiveData(portNoteData.capability, portNoteData.dataOverview, uid)

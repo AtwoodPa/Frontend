@@ -3,10 +3,24 @@ import { Context, Options, CertPerm } from "./handler.interface";
 import { tryDo } from "./util"
 import { photo } from "./filter";
 import { makeCss, Classes, Render } from './handler.collect.jss'
+
+/**
+ * 数据项
+ */
 export interface DataItem {
-    desc: string;
-    record?: string;
+    desc: string; // 描述
+    record?: string; // 记录，可选  用于存储特定的数据
 }
+
+/**
+ * 响应式状态
+ * showModal: 控制模态框的显示状态。
+ * submitting: 提交过程中的状态指示（是否正在提交）。
+ * data: 存储多个 DataItem 的数组。
+ * title: 模态框的标题。
+ * viewList: 存储视图列表的信息。
+ * infoList: 额外的信息列表。
+ */
 export interface Reactive {
     showModal: boolean;
     submitting: boolean;
@@ -16,27 +30,56 @@ export interface Reactive {
     infoList: any[]
 }
 
+/**
+ * CollectHandler抽象类
+ * 主要用于 处理数据的收集和管理，特别是用户交互的逻辑
+ */
 export abstract class CollectHandler extends CertPerm {
     form: any;
     reactive!: Reactive;
     it: any;
     classes!: Classes;
     render!: Render;
-    constructor(context: Context, options: Options) {
+
+    /**
+     * 构造方法 * 初始化
+     * 接受上下文和选项参数，并初始化一些变量
+     * @param context
+     * @param options
+     * @protected
+     */
+    protected constructor(context: Context, options: Options) {
         super(context, options);
-        this._init();
+        this._init().then(r => {
+
+        });
     }
 
+    /**
+     * 初始化操作
+     */
     async _init() {
+        /**
+         * 检查环境是否满足条件
+         *
+         * 1、检查是否安装了证书
+         */
         let pass = await this._checkEnv();
         if (pass) {
+            // 初始化CSS样式
             this._css();
+            // 准备用户信息
             await this._prepareUser();
-            this._view();
+            // 初始化视图
+            this._view().then(r => {
+
+            });
             // console.log("init-user", JSON.stringify(this.userTabId.user));
             // console.log("init-token", JSON.stringify(this.userTabId.user.token));
+            // 检测用户是否登录
             if (this.userTabId.user) {
-                this._autoCollect();
+                // 自动收集数据
+                await this._autoCollect();
             } else {
                 this.context.$Notice.error({
                     title: '请先登录插件',
@@ -45,12 +88,22 @@ export abstract class CollectHandler extends CertPerm {
             }
         }
     }
+
+    /**
+     * 初始化CSS样式
+     * 生成样式类和渲染函数
+     */
     _css() {
         let { $jss } = this.context;
         let { classes, render } = makeCss($jss);
         this.classes = classes;
         this.render = render;
     }
+
+    /**
+     * 初始化基础视图
+     * @param data
+     */
     _basicView(data: any) {
         let subList = [
             {
@@ -162,15 +215,20 @@ export abstract class CollectHandler extends CertPerm {
         };
     }
 
-
+    /**
+     * 自动收集数据
+     */
     async _autoCollect() {
+        // 自动收集数据，调用 _doCollect 获取数据。
         let { ok, data } = await this._doCollect();
         console.log('autoCollect', ok, data);
         if (ok) {
+            // 验证数据有效性，如果有效则调用 _autoServer 提交数据
             if (this._validateAuto(data)) {
                 console.log("this.reactive.user", this.userTabId.user);
                 data.autoOpId = this.userTabId.user?.id;
                 this.form = data;
+                // 调用 _autoServer 提交数据到服务器。
                 await this._autoServer(data);
             }
         } else {
@@ -178,16 +236,24 @@ export abstract class CollectHandler extends CertPerm {
             this._ending(data || {});
         }
     }
+
     _makeParams(form: any): any {
         return form;
     }
+
+    /**
+     *
+     * @param form
+     */
     async _autoServer(form: any) {
         let { context, options, reactive, api, userTabId } = this;
-
+        // 打印用户token
+        // auto-token 0a4afa4162d54a24a272638e39d44eab
         console.log("auto-token", userTabId.user.token);
 
+        // 提交数据到服务器
         let params = this._makeParams(form);
-        this._beforeAuto(params);
+        this._beforeAuto(params);// 这个暂时未实现
         let rs = await api.extension.auto(params);
         if (rs) {
             let { code, data, msg } = rs;
@@ -299,6 +365,11 @@ export abstract class CollectHandler extends CertPerm {
             }, 1000);
         });
     }
+
+    /**
+     * 数据采集
+     *
+     */
     async _doCollect() {
         let rs: any = await this._tryCollect();
         console.log('tryCollect', rs);
@@ -346,6 +417,10 @@ export abstract class CollectHandler extends CertPerm {
             }
         }
     }
+
+    /**
+     * 自动采集
+     */
     abstract _parser(): Promise<any>;
     _cardMeta() {
         let me = this;
@@ -401,11 +476,23 @@ export abstract class CollectHandler extends CertPerm {
             ]
         };
     }
+
+    /**
+     * 表单
+     * @param form
+     */
     abstract _formMeta(form: any): any;
 
     _afterLogin(): void {
         this._autoCollect();
     }
+
+    /**
+     * 视图生成
+     * 定义多个渲染函数用于生成UI组件
+     *  1、card：显示用户信息和数据表格
+     *  2、form：显示用户提交数据的Modal（模态框）
+     */
     async _view() {
         let { context, classes, _submitServer, _signOut, userTabId } = this;
         let { columns, data } = this._cardMeta();
@@ -626,6 +713,10 @@ export abstract class CollectHandler extends CertPerm {
         console.debug('void otherCollect')
         return Promise.resolve();
     }
+
+    /**
+     * 获取当前组件的class
+     */
     _getElClass(): string {
         return "";
     }

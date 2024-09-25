@@ -19,6 +19,11 @@ export interface Render {
     site: Function,
     photo: Function
 }
+
+/**
+ * 生成CSS样式
+ * @param $jss
+ */
 export function makeCss($jss: any) {
     const { classes } = $jss.createStyleSheet({
         '@global': {

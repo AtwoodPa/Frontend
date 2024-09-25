@@ -11,10 +11,16 @@ export class XtResourceHandler extends CollectHandler {
         super(context, option);
     }
 
+    /**
+     * 获取元素选择器
+     */
     _getElClass() {
         return ".top-info .link-index";
     }
 
+    /**
+     * 获取数据
+     */
     async _parser() {
         // if (this.options.forGaoqu) {
         //     const data = await me.collectMainData(vm, locationData);
@@ -23,11 +29,15 @@ export class XtResourceHandler extends CollectHandler {
         // } else {
         //     me.collectOtherData(vm, locationData.xtId);
         const data = await this.collectMainData();
-        // await this.collectOtherData();
+        await this.collectOtherData();
         return data;
         // return this.collectMainData();
     }
 
+    /**
+     *
+     * @param form
+     */
     _formMeta(form: any) {
         let {options, reactive} = this;
         reactive.title = `资源基本信息(${options.version})`;
@@ -126,6 +136,10 @@ export class XtResourceHandler extends CollectHandler {
         ];
     }
 
+    /**
+     * 构造参数
+     * @param form 提交到服务器的参数
+     */
     _makeParams(form: any) {
         const {rank, price, capability, dataOverview, ...others} = form
         return {
@@ -137,10 +151,18 @@ export class XtResourceHandler extends CollectHandler {
         }
     }
 
+    /**
+     * 校验提交数据
+     * @param form
+     */
     _validateSubmit(form: any) {
         return true;
     }
 
+    /**
+     * 流程终止操作
+     * @param form
+     */
     async _ending(form: any) {
         const {tag, gaoqId, fromTabId, forGaoqu, fromId} = this.options;
         if (fromTabId && gaoqId && fromTabId > 0 && forGaoqu == For.爬取星图等级) {
@@ -224,6 +246,9 @@ export class XtResourceHandler extends CollectHandler {
         return true;
     }
 
+    /**
+     * 获取主页数据
+     */
     async collectMainData() {
         let mediaId = '';
         let uid = '';
