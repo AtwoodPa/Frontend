@@ -16,7 +16,10 @@ import randomUseragent from 'random-useragent';
 for (let i = 0; i < 100; i++) {
     console.log("----------------------");
     console.log("Random User-Agent:");
-    const userAgent: string | null = randomUseragent.getRandom(); // getRandom可能返回null
+    const userAgent: string | null = randomUseragent.getRandom((ua) => {
+        return parseFloat(ua.browserVersion) >= 50;
+    });
+    // getRandom可能返回null
     console.log(userAgent);
     let demo1 = new demo();
     demo1.delay(100, 200).then(r => {
