@@ -93,6 +93,7 @@ const oldCollectOtherData = {
                         const updateAuthorContent = this.getAuthorContent(handleMap, vm);
                         Object.assign(resourceXt, updateAuthorContent)
                         vm.$Message.success({ content })
+
                         syncOp()
                     }
                 } catch (error) {
@@ -175,6 +176,7 @@ const oldCollectOtherData = {
         // } catch (error) {
         //     $api.baojing({ tag: "商业能力表现", message: "api/data_sp/get_author_link_info", site: window.location.href })
         // }
+
         console.log("resourceXt", resourceXt)
         vm.$Message.success({ content: `谢谢，您的等待，所有数据提取成功` });
 
