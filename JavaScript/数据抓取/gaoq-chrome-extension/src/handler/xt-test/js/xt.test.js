@@ -90,7 +90,7 @@ const oldCollectOtherData = {
                     const handleMap = {}
                     if (authorContent.hasOwnProperty("base_resp")) {
                         handleMap[key] = authorContent
-                        const updateAuthorContent = this.getAuthorContent(handleMap, vm);
+                        const updateAuthorContent = this.getAuthorContent(handleMap);
                         Object.assign(resourceXt, updateAuthorContent)
                         vm.$Message.success({ content })
 

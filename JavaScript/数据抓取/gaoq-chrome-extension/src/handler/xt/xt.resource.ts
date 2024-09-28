@@ -1,11 +1,9 @@
 import {Context, Options} from "../handler.interface";
-import {For, Msg, Aim} from "../enum";
+import {For, Msg, Aim, Grab} from "../enum";
 import {CollectHandler} from '../handler.collect'
 import {content2Background, patchFrom} from "../bridge";
-import {objectToList, tryDo, getDomText, getAuthorContentData} from "../util";
+import {objectToList, tryDo, getDomText, getAuthorContentData, portRequest} from "../util";
 import {text2Int} from "../filter";
-import {AxiosResponse} from 'axios';
-import randomUserAgent from 'random-useragent'
 
 export class XtResourceHandler extends CollectHandler {
     constructor(context: Context, option: Options) {
@@ -17,79 +15,29 @@ export class XtResourceHandler extends CollectHandler {
     }
 
     async _parser() {
-        const {
-            platform,
-            origin,
-            photo,
-            site,
-            platformSite,
-            name,
-            fanCount,
-            sex,
-            region,
-            mcn,
-            introduce,
-            version,
-            uid,
-            shortId,
-            secUid,
-            clean,
-            mediaId,
-            level,
-            xtId,
-            rank,
-            price,
-            fieldTags,
-            contentTags,
-            patch,
-            dataOverview,
-            subContentTags,
-            subFieldTags,
-            capability
-        } = await this.collectMainData();// 原基础数据
-        const form = {
-            platform,
-            origin,
-            photo,
-            site,
-            platformSite,
-            name,
-            fanCount,
-            sex,
-            region,
-            mcn,
-            introduce,
-            version,
-            uid,
-            shortId,
-            secUid,
-            clean,
-            mediaId,
-            level,
-            xtId,
-            rank,
-            price,
-            fieldTags,
-            contentTags,
-            patch,
-            dataOverview,
-            subContentTags,
-            subFieldTags,
-            capability,
+        const {grab} = this.options
+        if (grab && grab == Grab.抓取全部数据) {
+            const mainDataPromise = this.collectMainData();
+            const contentShowPromise = this.collectContextShowDataFromApiGet(mainData.xtId)
+            const otherDataPromise = this.collectOtherData();
+            const [mainData, otherData, contentShowData] = await Promise.all([mainDataPromise, otherDataPromise, contentShowPromise]);
+            console.log("===== get xt original resource data ====\n", mainData);
+            console.log("contentShowData", contentShowData)
+            console.log("otherData", otherData);
+            return mainData;
+        } else {
+            const mainData = await this.collectMainData();
+            // 1、内容表现
+            const contentShowData = this.collectContextShowDataFromApiGet(mainData.xtId);
+            console.log("contentShowData", contentShowData)
+            // 2、最新15个视频表现柱状图
+            // 3、受众标签类型
+            // 4、星图指数筛选条件
+            const otherData = this.collectOtherData();
+            console.log("otherData", otherData);
+            console.log("===== get xt original resource data ====\n", mainData);
+            return mainData;
         }
-        console.log("===== get xt original resource data ====", JSON.stringify(form));
-        // await this.collectOtherData();
-        // 额外数据 - 240925
-        // 1、内容表现
-        await this.collectContextShowData(xtId);
-        // // 2、最新15个视频表现柱状图
-        // await this.collectLatestVideoShowData();
-        // // 3、受众标签类型
-        // await this.collectAudienceTagTypeData();
-        // // 4、星图指数筛选条件
-        // await this.collectStarIndexData();
-
-        return form;
     }
 
     _formMeta(form: any) {
@@ -289,6 +237,7 @@ export class XtResourceHandler extends CollectHandler {
     }
 
     async collectMainData() {
+        const bus = this.context.$bus;
         let mediaId = '';
         let uid = '';
         let shortId = '';
@@ -329,6 +278,17 @@ export class XtResourceHandler extends CollectHandler {
                 // promisesOrderList,
                 // authorContentMap
             } = await this.baseBusData();
+            const publishMediaIdAnduid = {
+                url: "publishMediaIdAnduid",
+                data: {
+                    mediaId,
+                    bloggerId: uid,
+                    // ...cepAndCpmMap,
+                    // ...authorContent
+                }
+            }
+            bus.publish(JSON.stringify(publishMediaIdAnduid));
+            console.log("done publish", publishMediaIdAnduid);
             const busData = await this.busData();
             const busGetContact: any = await this.busGetContact();
             data = {
@@ -387,15 +347,7 @@ export class XtResourceHandler extends CollectHandler {
             // 将capability 数据直接传给 collectOtherData 方法
             // collectOtherData 方法 每收集一次数据都会同步到 vm.resourceXt
             // collectOtherData 方法 异步时 库内会在extension_import或者resouce表里面存在该资源，collectOtherData 方法按批次量更新
-            // const publishMediaIdAnduid = {
-            //     url: "publishMediaIdAnduid",
-            //     data: {
-            //         mediaId,
-            //         bloggerId: uid,
-            //         ...cepAndCpmMap,
-            //         ...authorContent
-            //     }
-            // }
+
             // bus.publish(JSON.stringify(publishMediaIdAnduid))
             // console.log("done publish", publishMediaIdAnduid);
             // data.capability = vm.resourceXt;
@@ -523,32 +475,9 @@ export class XtResourceHandler extends CollectHandler {
             return false
         });
 
-
-
         if (tabList && tabList[2]) {
             console.log("tabList[2]", 1);
-            await tryDo(1500, () => {
-                tabList[2].click();
-                return true;
-            });
-
-            await tryDo(1500, async () => {
-                tabList[3].click();
-                // 连接用户 - 连接用户画像tab
-                const radioGroup: any = await tryDo(1500, () => {
-                    const radioGroupDom =  document.querySelector('.page-right .tabs-content .title-wrapper .el-radio-group[role="radiogroup"]');
-                    if (radioGroupDom) {
-                        const radioButtons = radioGroupDom.children;
-                        if (radioButtons && radioButtons[1]) {
-                            return radioButtons;
-                        }
-                    }
-                    return false
-                });
-                radioGroup[1].click()
-                return true;
-            });
-
+            tabList[2].click();
             // 预期cpm cpe
             const authorContent1mPromise: any = bus.subscribe(
                 /\/api\/data_sp\/get_author_spread_info/,
@@ -567,73 +496,13 @@ export class XtResourceHandler extends CollectHandler {
                 }
             );
 
-            // // 数据概览
-            // // 最新15个视频表现柱状图
-            const last15VideoPromise: any = bus.subscribe(
-                /\/api\/author\/get_author_show_items_v2/,
-                (rs: any) => {
-                    let body = bus.parseBody(rs);
-                    return body.hasOwnProperty('base_resp') ? body : false;
-                }
-            );
-            // // 星图指数
-            // const xtIndexPromise: any = bus.subscribe(
-            //     /\/api\/data_sp\/get_author_link_info/,
-            //     (rs: any) => {
-            //         let body = bus.parseBody(rs);
-            //         return body.hasOwnProperty('base_resp') ? body : false;
-            //     }
-            // );
-            // // 受众标签类型 - 连接用户数
-            // const connectUsersPromise: any = bus.subscribe(
-            //     /\/api\/data_sp\/author_link_struct/,
-            //     (rs: any) => {
-            //         let body = bus.parseBody(rs);
-            //         return body.hasOwnProperty('base_resp') ? body : false;
-            //     }
-            // );
-            // // 受众标签类型 - 连接用户画像 - 观众画像
-            // const audiencePortraitPromise: any = bus.subscribe(
-            //     /\/api\/data_sp\/author_audience_distribution/,
-            //     (rs: any) => {
-            //         console.log("author_audience_distribution - Response:", rs);
-            //         let body = bus.parseBody(rs);
-            //         return body.hasOwnProperty('base_resp') ? body : false;
-            //     }
-            // );
-            // // 受众标签类型 - 连接用户画像 - 粉丝画像
-            // const fansPortraitPromise: any = bus.subscribe(
-            //     /\/api\/data_sp\/get_author_fans_distribution/,
-            //     (rs: any) => {
-            //         let body = bus.parseBody(rs);
-            //         return body.hasOwnProperty('base_resp') ? body : false;
-            //     }
-            // );
-
             const [
                 authorContent1m,
                 authorVideoDistribution,
-                // last15VideoBody,
-                // xtIndexBody,
-                // connectUsersBody,
-                // audiencePortraitBody,
-                // fansPortraitBody,
             ] = await Promise.all([
                 authorContent1mPromise,
                 authorVideoDistributionPromise,
-                // last15VideoPromise,
-                // xtIndexPromise,
-                // connectUsersPromise,
-                // audiencePortraitPromise,
-                // fansPortraitPromise
-
             ]);
-            // console.log("busData ok", {last15VideoBody, xtIndexPromise});
-            //
-            // console.log("========>>> data_sp connectUsersPromise : " , connectUsersBody)
-            // console.log("========>>> data_sp audiencePortraitBody : " , audiencePortraitBody)
-            // console.log("========>>> data_sp fansPortraitBody : " , fansPortraitBody)
-
             const {video_content_distribution} = authorVideoDistribution;
             tabList[1].click();
             data = {
@@ -641,11 +510,6 @@ export class XtResourceHandler extends CollectHandler {
                 // authorBusinessCapabilitiesNoLimit: {},
                 // authorBusinessCapabilitiesNoLimit: bus.parseBody(authorBusinessCapabilitiesNoLimit),
                 video_content_distribution,
-                // last15VideoBody,
-                // xtIndexBody,
-                // connectUsersBody,
-                // audiencePortraitBody,
-                // fansPortraitBody
             };
         }
 
@@ -801,165 +665,7 @@ export class XtResourceHandler extends CollectHandler {
                 rank[key] = rankElement;
             });
         }
-
-
         console.log("cepAndCpmMap", cepAndCpmMap);
-        2、最新15个视频表现柱状图数据
-        console.log("last15VideoBody", last15VideoBody);
-        const {latest_item_info, latest_star_item_info} = last15VideoBody;
-        const calculateMin = (arr: number[]): number => Math.min(...arr);
-        const calculateMax = (arr: number[]): number => Math.max(...arr);
-        const calculateAverage = (arr: number[]): number => arr.reduce((a, b) => a + b, 0) / arr.length;
-        const printStats = (label: string, data: number[]) => {
-            console.log(`最低${label}:`, calculateMin(data), "万");
-            console.log(`最高${label}:`, calculateMax(data), "万");
-            console.log(`${label}均值:`, calculateAverage(data).toFixed(2), "万");
-        };
-        const calculateHotVideoPercentage = (isHotCount: number, totalCount: number): string => {
-            const percentage = (isHotCount / totalCount) * 100;
-            return percentage.toFixed(2) + "%";
-        };
-        const processVideoStats = (videoInfo: any[], label: string) => {
-            const plays = videoInfo.map(video => video.play / 10000);
-            const likes = videoInfo.map(video => video.like / 10000);
-            const comments = videoInfo.map(video => video.comment / 10000);
-            const shares = videoInfo.map(video => video.share / 10000);
-            const isHotCount = videoInfo.filter(video => video.is_hot).length;
-
-            printStats("播放量", plays);
-            printStats("点赞量", likes);
-            printStats("评论量", comments);
-            printStats("转发量", shares);
-
-            console.log(`爆量视频百分比:`, calculateHotVideoPercentage(isHotCount, videoInfo.length));
-        };
-
-        processVideoStats(latest_item_info, "个人视频");
-        processVideoStats(latest_star_item_info, "星图视频");
-        3、受众标签类型
-        const monthlyConnectedUsers = (connectUsersBody.link_struct['5'] as any).value;// 月连接用户数
-        const understandUsers = connectUsersBody.link_struct['1'].value; // 了解
-
-        const interestUsers = connectUsersBody.link_struct['2'].value;// 兴趣
-
-        const likeUsers = connectUsersBody.link_struct['3'].value; // like
-
-        const followUsers = connectUsersBody.link_struct['4'].value;// 追随
-
-        const monthlyConnectedUsers = connectUsersBody.link_struct['5'].value;// 月连接用户数
-        // 使用 reduce 获取最大 proportion 和对应的 value
-        const { value: maxValue } = Object.values(connectUsersBody.link_struct)
-            .slice(0, 4)
-            .reduce((acc, item) => {
-                return item.proportion > acc.proportion ? { proportion: item.proportion, value: item.value } : acc;
-            }, { proportion: -Infinity, value: 0 });
-        const monthlyDeepUsers = monthlyConnectedUsers - maxValue;// 月深度用户数
-
-        console.log("月连接用户数:", monthlyConnectedUsers);
-        console.log("月深度用户数:", monthlyDeepUsers);
-        //TODO 月粉丝增长量 - 待定 240920
-        console.log("了解 用户数:", understandUsers);
-        console.log("感兴趣用户数:", interestUsers);
-        console.log("喜欢 用户数:", likeUsers);
-        console.log("追随 用户数:", followUsers);
-        // 观众画像数据
-        const audienceByPeopleType: Record<string, string> = {};
-        const audienceByAge: Record<string, string> = {};
-        const audienceByGender: Record<string, string> = {};
-        const audienceByDevice: Record<string, string> = {};
-        const audienceByRegion: Record<string, string> = {};
-        audiencePortraitBody.distributions.forEach(distribution => {
-            switch (distribution.type_display) {
-                case '八大人群分布':
-                    distribution.distribution_list.forEach(item => {
-                        audienceByPeopleType[item.distribution_key] = item.distribution_value;
-                    });
-                    break;
-                case '年龄分布':
-                    distribution.distribution_list.forEach(item => {
-                        audienceByAge[item.distribution_key] = item.distribution_value;
-                    });
-                    break;
-                case '性别分布':
-                    distribution.distribution_list.forEach(item => {
-                        const genderKey = item.distribution_key === 'male' ? '男性' : '女性';
-                        audienceByGender[genderKey] = item.distribution_value;
-                    });
-                    break;
-                case '设备品牌分布':
-                    distribution.distribution_list.forEach(item => {
-                        audienceByDevice[item.distribution_key] = item.distribution_value;
-                    });
-                    break;
-                case '省份分布':
-                case '城市分布':
-                    distribution.distribution_list.forEach(item => {
-                        audienceByRegion[item.distribution_key] = item.distribution_value;
-                    });
-                    break;
-                default:
-                    console.warn(`未处理的分布类型: ${distribution.type_display}`);
-            }
-        });
-        console.log("八大人群占比:", audienceByPeopleType);
-        console.log("观众年龄:", audienceByAge);
-        console.log("观众性别:", audienceByGender);
-        console.log("观众设备品牌:", audienceByDevice);
-        console.log("观众地域:", audienceByRegion);
-        // 粉丝画像
-        const ageDistribution: Record<string, string> = {};
-        const genderDistribution: Record<string, string> = {};
-        const deviceBrandDistribution: Record<string, string> = {};
-        const regionDistribution: Record<string, string> = {};
-        fansPortraitBody.distributions.forEach(distribution => {
-            // const list = distribution.distribution_list.map(item => ({
-            //     key: item.distribution_key,
-            //     value: parseInt(item.distribution_value, 10)
-            // }));
-
-            switch (distribution.type_display) {
-                case '年龄分布':
-                    distribution.distribution_list.forEach(item => {
-                        ageDistribution[item.distribution_key] = item.distribution_value;
-                    })
-                    break;
-                case '性别分布':
-                    distribution.distribution_list.forEach(item => {
-                        genderDistribution[item.distribution_key] = item.distribution_value;
-                    })
-                    break;
-                case '设备品牌分布':
-                    distribution.distribution_list.forEach(item => {
-                        deviceBrandDistribution[item.distribution_key] = item.distribution_value;
-                    })
-                    break;
-                case '省份分布':
-                case '城市分布':
-                    distribution.distribution_list.forEach(item => {
-                        regionDistribution[item.distribution_key] = item.distribution_value;
-                    })
-                    break;
-                default:
-                    break;
-            }
-        });
-        console.log("粉丝年龄分布:", ageDistribution);
-        console.log("粉丝性别分布:", genderDistribution);
-        console.log("粉丝设备品牌分布:", deviceBrandDistribution);
-        console.log("粉丝地域分布:", regionDistribution);
-        console.log("粉丝地域分布:", regionDistribution);
-        // 4、星图指数数据
-        const xtValues: number[] = [
-            xtIndexBody.cooperate_index.value,
-            xtIndexBody.cp_index.value,
-            xtIndexBody.link_convert_index.value,
-            xtIndexBody.link_shopping_index.value,
-            xtIndexBody.link_spread_index.value,
-            xtIndexBody.link_star_index.value,
-        ];
-        console.log("星图指标数据：", xtValues)
-
-        console.log("333333333",connectUsersBody, audiencePortraitBody, fansPortraitBody)
 
         const data = {
             rank,
@@ -1072,170 +778,472 @@ export class XtResourceHandler extends CollectHandler {
         return cepAndCpmMap;
     }
 
-    // private async collectOtherData() {
-    //     const resultAuthorContent: any = {}
-    //     const {clean, xtId, platformSite} = this.locationData();
-    //     // 1.内容表现
-    //
-    //     const authorContentMap: Record<string, { url: string; content: string; prefix: string; suffix: string }> = {
-    //         authorContentXtAll1m: {
-    //             url: `https://www.xingtu.cn/gw/api/data_sp/get_author_spread_info?o_author_id=${xtId}&platform_source=1&platform_channel=1&range=2&type=2&only_assign=true`,
-    //             content: '近30天星图视频内容表现 提取成功',
-    //             prefix: "xtAll",
-    //             suffix: '1m'
-    //         },
-    //         authorContentXtAll3m: {
-    //             url: `https://www.xingtu.cn/gw/api/data_sp/get_author_spread_info?o_author_id=${xtId}&platform_source=1&platform_channel=1&range=3&type=2&only_assign=true`,
-    //             content: '近90天星图视频内容表现 提取成功',
-    //             prefix: "xtAll",
-    //             suffix: '3m'
-    //         },
-    //     };
-    //
-    //     // await wait(1500)
-    //     // 数据概览 - 内容表现
-    //     for (const key of Object.keys(authorContentMap)) {
-    //
-    //         const {prefix, suffix} = authorContentMap[key]
-    //         try {
-    //             const {url, content} = authorContentMap[key];
-    //             const authorContent: AxiosResponse<any> = await this.api.ajax.get(url);
-    //
-    //             await tryDo(5000, () => {
-    //                 return authorContent.hasOwnProperty('base_resp');
-    //             });
-    //             const handleMap: Record<string, any> = {};
-    //
-    //             if (authorContent.hasOwnProperty('base_resp')) {
-    //                 handleMap[key] = authorContent;
-    //                 console.log("authorContent==============", authorContent)
-    //                 const {play_over_rate, interact_rate, item_rate} = handleMap[key]
-    //                 resultAuthorContent[prefix + "wblOvertake" + suffix] = getAuthorContentData(play_over_rate, "overtake")
-    //                 resultAuthorContent[prefix + "wblValue" + suffix] = getAuthorContentData(play_over_rate, "value")
-    //                 resultAuthorContent[prefix + "hdlOvertake" + suffix] = getAuthorContentData(interact_rate, "overtake")
-    //                 resultAuthorContent[prefix + "hdlValue" + suffix] = getAuthorContentData(interact_rate, "value")
-    //                 if (item_rate) {
-    //                     const {play_mid, item_num} = item_rate
-    //                     resultAuthorContent[prefix + "bflzwsOvertake" + suffix] = getAuthorContentData(play_mid, "overtake")
-    //                     resultAuthorContent[prefix + "bflzwsValue" + suffix] = getAuthorContentData(play_mid, "value")
-    //                 }
-    //                 resultAuthorContent[prefix + "fbzp" + suffix] = getAuthorContentData(authorContent, "item_num")
-    //                 resultAuthorContent[prefix + "pjsc" + suffix] = getAuthorContentData(authorContent, "avg_duration")
-    //                 resultAuthorContent[prefix + "pjdz" + suffix] = getAuthorContentData(authorContent, "like_avg")
-    //                 resultAuthorContent[prefix + "pjpl" + suffix] = getAuthorContentData(authorContent, "comment_avg")
-    //                 resultAuthorContent[prefix + "pjzf" + suffix] = getAuthorContentData(authorContent, "share_avg")
-    //             }
-    //         } catch (error) {
-    //             this.api.baojing({
-    //                 tag: '内容表现',
-    //                 message: 'api/data_sp/get_author_spread_info',
-    //                 site: window.location.href
-    //             });
-    //         }
-    //     }
-    //     console.log("====================resultAuthorContent====================", resultAuthorContent)
-    //
-    //     return resultAuthorContent;
-    // }
+    private async portRequest(url: string, attribute: string) {
+        let response = null
+        try {
+            response = await this.api.ajax.get(url);
+            console.log("url", url);
+            console.log("response", response);
+            const pass = response.hasOwnProperty(attribute)
+            console.log("pass", pass);
+            if (!pass) {
+                throw new Error("data数据出错")
+            }
+        } catch (error: any) {
+            if (tryCount > 0) {
+            } else {
+                this.api.baojing({
+                    tag: this.options.tag,
+                    error: error?.message,
+                    at: `portRequest ${url}`,
+                    url: window.location.href
+                });
+            }
+        }
+        return response
+    }
 
-
+    /**
+     * 同步数据至OP
+     */
+    async syncOp() {
+        if (resourceXt.mediaId && resourceXt.bloggerId && resourceExisit) {
+            const {code, data} = await this.$api.resourceXt.makeBymediaIdAndBloggerId(resourceXt)
+            if (code == 0) {
+                const {extensionImportNum, resourceNum} = data;
+                if (extensionImportNum === 0 && resourceNum === 0) {
+                    resourceExisit = false;
+                    console.log("this a resource is noExists in the OP");
+                }
+            }
+        }
+    }
 
     /**
      * 抓取内容表现数据
      * @private
      */
-    private async collectContextShowData(xtId: any) {
+    private async collectContextShowDataFromApiGet(xtId: any) {
         const resultAuthorContent: any = {}
-        const authorContentMap: Record<string, { url: string; content: string; prefix: string; suffix: string }> = {
-            authorContentXtAll1m: {
-                url: `https://www.xingtu.cn/gw/api/data_sp/get_author_spread_info?o_author_id=${xtId}&platform_source=1&platform_channel=1&range=2&type=2&only_assign=true`,
-                content: '近30天星图视频内容表现 提取成功',
+        const authorContentXtUrl1m = (xt_id: string) =>
+            `https://www.xingtu.cn/gw/api/data_sp/get_author_spread_info?o_author_id=${xt_id}&platform_source=1&platform_channel=1&range=2&type=2&only_assign=true`;
+
+        const authorContentXtUr3m = (xt_id: string) =>
+            `https://www.xingtu.cn/gw/api/data_sp/get_author_spread_info?o_author_id=${xt_id}&platform_source=1&platform_channel=1&range=3&type=2&only_assign=true`;
+
+        const authorContentXtUrl1mPromise = await this.portRequest(authorContentXtUrl1m(xtId), "base_resp");
+        const authorContentXtUrl3mPromise = await this.portRequest(authorContentXtUr3m(xtId), "base_resp");
+        const [xt1m, xt3m] = await Promise.all([authorContentXtUrl1mPromise, authorContentXtUrl3mPromise]);
+        const totalData: any = {xt1m, xt3m};
+
+        const authorContentMap: any = {
+            xt1m: {
                 prefix: "xtAll",
                 suffix: '1m'
             },
-            authorContentXtAll3m: {
-                url: `https://www.xingtu.cn/gw/api/data_sp/get_author_spread_info?o_author_id=${xtId}&platform_source=1&platform_channel=1&range=3&type=2&only_assign=true`,
-                content: '近90天星图视频内容表现 提取成功',
+            xt3m: {
                 prefix: "xtAll",
                 suffix: '3m'
             },
         };
 
-        // 数据概览 - 内容表现
-        for (const key of Object.keys(authorContentMap)) {
+        Object.keys(totalData).forEach((key: string) => {
+            const data = totalData[key];
             const {prefix, suffix} = authorContentMap[key]
-            try {
-                const {url, content} = authorContentMap[key];
-                await this.delay(1000, 3000);
-                const userAgent: string | null = randomUserAgent.getRandom(function (ua) {
-                    const supportedBrowsers = ["Chrome", "Firefox", "Safari", "Edge", "Opera"];
-                    return parseFloat(ua.browserVersion) >= 50 && supportedBrowsers.includes(ua.browserName);
-                });
-                const authorContent: AxiosResponse<any> = await this.api.ajax.get(url, {
-                    headers: {
-                        'User-Agent': userAgent,
-                    },
-                });
-                const handleMap: Record<string, any> = {};
-
-                if (authorContent.hasOwnProperty('base_resp')) {
-                    handleMap[key] = authorContent;
-                    console.log("authorContent==============", authorContent)
-                    const {play_over_rate, interact_rate, item_rate} = handleMap[key]
-                    resultAuthorContent[prefix + "wblOvertake" + suffix] = getAuthorContentData(play_over_rate, "overtake")
-                    resultAuthorContent[prefix + "wblValue" + suffix] = getAuthorContentData(play_over_rate, "value")
-                    resultAuthorContent[prefix + "hdlOvertake" + suffix] = getAuthorContentData(interact_rate, "overtake")
-                    resultAuthorContent[prefix + "hdlValue" + suffix] = getAuthorContentData(interact_rate, "value")
-                    if (item_rate) {
-                        const {play_mid, item_num} = item_rate
-                        resultAuthorContent[prefix + "bflzwsOvertake" + suffix] = getAuthorContentData(play_mid, "overtake")
-                        resultAuthorContent[prefix + "bflzwsValue" + suffix] = getAuthorContentData(play_mid, "value")
-                    }
-                    resultAuthorContent[prefix + "fbzp" + suffix] = getAuthorContentData(authorContent, "item_num")
-                    resultAuthorContent[prefix + "pjsc" + suffix] = getAuthorContentData(authorContent, "avg_duration")
-                    resultAuthorContent[prefix + "pjdz" + suffix] = getAuthorContentData(authorContent, "like_avg")
-                    resultAuthorContent[prefix + "pjpl" + suffix] = getAuthorContentData(authorContent, "comment_avg")
-                    resultAuthorContent[prefix + "pjzf" + suffix] = getAuthorContentData(authorContent, "share_avg")
+            const handleMap: any = {};
+            if (data.hasOwnProperty("base_resp")) {
+                handleMap[key] = data;
+                const {play_over_rate, interact_rate, item_rate} = handleMap[key]
+                resultAuthorContent[prefix + "wblOvertake" + suffix] = getAuthorContentData(play_over_rate, "overtake")
+                resultAuthorContent[prefix + "wblValue" + suffix] = getAuthorContentData(play_over_rate, "value")
+                resultAuthorContent[prefix + "hdlOvertake" + suffix] = getAuthorContentData(interact_rate, "overtake")
+                resultAuthorContent[prefix + "hdlValue" + suffix] = getAuthorContentData(interact_rate, "value")
+                if (item_rate) {
+                    const {play_mid} = item_rate
+                    resultAuthorContent[prefix + "bflzwsOvertake" + suffix] = getAuthorContentData(play_mid, "overtake")
+                    resultAuthorContent[prefix + "bflzwsValue" + suffix] = getAuthorContentData(play_mid, "value")
                 }
-            } catch (error) {
-                this.api.baojing({
-                    tag: '内容表现',
-                    message: 'api/data_sp/get_author_spread_info',
-                    site: window.location.href
-                });
+                resultAuthorContent[prefix + "fbzp" + suffix] = getAuthorContentData(data, "item_num")
+                resultAuthorContent[prefix + "pjsc" + suffix] = getAuthorContentData(data, "avg_duration")
+                resultAuthorContent[prefix + "pjdz" + suffix] = getAuthorContentData(data, "like_avg")
+                resultAuthorContent[prefix + "pjpl" + suffix] = getAuthorContentData(data, "comment_avg")
+                resultAuthorContent[prefix + "pjzf" + suffix] = getAuthorContentData(data, "share_avg")
             }
-        }
-        console.log("====================resultAuthorContent====================")
-        console.log(resultAuthorContent)
+            this.sync2OP(resultAuthorContent)
+        });
+
         return resultAuthorContent;
+    }
 
+    getLast15VideoData(totalData: any) {
+        const resultLast15Video: any = {};
+
+        if (totalData) {
+            Object.keys(totalData).forEach((key: string) => {
+                console.log("totalData", totalData[key], key);
+                if (totalData[key]) {
+                    // bf
+                    resultLast15Video[key + "BfMin"] = parseFloat(totalData[key].bf.min);
+                    resultLast15Video[key + "BfMax"] = parseFloat(totalData[key].bf.max);
+                    resultLast15Video[key + "BfAvg"] = parseFloat(totalData[key].bf.avg);
+                    resultLast15Video[key + "BlSpBfbValue"] = parseFloat(totalData[key].blspbfbvalue);
+                    // dz
+                    resultLast15Video[key + "DzMin"] = parseFloat(totalData[key].dz.min);
+                    resultLast15Video[key + "DzMax"] = parseFloat(totalData[key].dz.max);
+                    resultLast15Video[key + "DzAvg"] = parseFloat(totalData[key].dz.avg);
+                    // pl
+                    resultLast15Video[key + "PlMin"] = parseFloat(totalData[key].pl.min);
+                    resultLast15Video[key + "PlMax"] = parseFloat(totalData[key].pl.max);
+                    resultLast15Video[key + "PlAvg"] = parseFloat(totalData[key].pl.avg);
+                    // zf
+                    resultLast15Video[key + "ZfMin"] = parseFloat(totalData[key].zf.min);
+                    resultLast15Video[key + "ZfMax"] = parseFloat(totalData[key].zf.max);
+                    resultLast15Video[key + "ZfAvg"] = parseFloat(totalData[key].zf.avg);
+                }
+            });
+        }
+        return resultLast15Video;
+    }
+
+
+    async sync2OP(data: any) {
+        console.log("sync2OP analysis data => ", data);
+        // const resourceExist = this.form.uid ? true : false;
+        const bus = this.context.$bus;
+        let resourceExist = true;
+        const {form} = this
+        console.log("this.form", form)
+        const syncOPPromise = bus.subscribe(/publishMediaIdAnduid/, (rs: any) => {
+            return rs.data;
+        });
+        const [syncOPBody] = await Promise.all([syncOPPromise]);
+        const {mediaId, bloggerId} = syncOPBody;
+        const params = {
+            mediaId,
+            bloggerId,
+            ...data
+        };
+        console.log("sync2OP params", params);
+        if (mediaId && bloggerId && resourceExist) {
+            const {code, data} = await this.api.resourceXt.makeBymediaIdAndBloggerId(params);
+            if (code === 0) {
+                const {extensionImportNum, resourceNum} = data;
+                if (extensionImportNum === 0 && resourceNum === 0) {
+                    resourceExist = false;
+                    console.log("this a resource is noExists in the OP");
+                }
+                console.log("sync2OP ok", data);
+            } else {
+                console.error("sync2OP error", data);
+            }
+
+        }
     }
 
     /**
-     * 最新15个视频表现柱状图
+     * 订阅获取其他数据
+     *
+     * 2最新15个视频表现柱状图  tabList[2]
+     * 3受众标签类型
+     * 4星图指数筛选条件
      * @private
      */
-    private async collectLatestVideoShowData() {
+    private async collectOtherData() {
         const bus = this.context.$bus;
-        let data = {}
-    }
+        let resultData: any = {}
+        let resultLast15Video: any = {}
+        let resultConnectNums: any = {}
+        let resultPortrait: any = {}
+        let resultIndexValue: any = {}
+        const tabList: any = await tryDo(1500, () => {
+            const clickDom = document.querySelector('.page-right .card-panel .is-top[role="tablist"]')
+            if (clickDom) {
+                const tabList = clickDom.children;
+                if (tabList && tabList[2]) {
+                    return tabList
+                }
+            }
+            return false
+        });
+        if (tabList && tabList[1]) {
+            console.log("tabList[1].click", 1)
+            await this.delay(1000, 10000);
+            tabList[1].click();
+            const authorContentShowPromise: any = bus.subscribe(
+                /\/api\/author\/get_author_show_items_v2/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
+            const [authorContentShowBody] = await Promise.all([authorContentShowPromise]);
+            console.log("collectOtherData ok => authorContentShowBody", authorContentShowBody);
+        }
+        // tab2内容表现 最新15个视频表现柱状图
+        if (tabList && tabList[2]) {
+            console.log("tabList[2].click", 2)
+            await this.delay(1000, 10000);
+            tabList[2].click();
+            // 最新15个视频表现柱状图
+            const last15VideoPromise: any = bus.subscribe(
+                /\/api\/author\/get_author_show_items_v2/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
+            let videoTotalData = {};
+            const [last15VideoBody] = await Promise.all([last15VideoPromise]);
+            console.log("collectOtherData ok => last15VideoBody", last15VideoBody);
+            const {latest_item_info, latest_star_item_info} = last15VideoBody;
 
-    /**
-     * 受众标签类型
-     * @private
-     */
-    private async collectAudienceTagTypeData() {
-        const bus = this.context.$bus;
-        let data = {}
-    }
+            const calculateMin = (arr: number[]): number => Math.min(...arr);
+            const calculateMax = (arr: number[]): number => Math.max(...arr);
+            const calculateAverage = (arr: number[]): number => arr.reduce((a, b) => a + b, 0) / arr.length;
+            const collectStats = (label: string, data: number[]) => {
+                return {
+                    min: calculateMin(data).toFixed(2),
+                    max: calculateMax(data).toFixed(2),
+                    avg: calculateAverage(data).toFixed(2)
+                };
+            };
 
-    /**
-     * 星图指数筛选条件
-     * @private
-     */
-    private async collectStarIndexData() {
-        const bus = this.context.$bus;
-        let data = {}
+            // 计算爆量视频百分比
+            const calculateHotVideoPercentage = (isHotCount: number, totalCount: number): string => {
+                const percentage = (isHotCount / totalCount) * 100;
+                return percentage.toFixed(2);
+            };
+
+            const processVideoStats = (videoInfo: any[], label: string) => {
+                const plays = videoInfo.map(video => Number(video.play) / 10000 || 0);
+                const likes = videoInfo.map(video => Number(video.like) / 10000 || 0);
+                const comments = videoInfo.map(video => Number(video.comment) / 10000 || 0);
+                const shares = videoInfo.map(video => Number(video.share) / 10000 || 0);
+                const isHotCount = videoInfo.filter(video => video.is_hot).length;
+
+                const stats = {
+                    bf: collectStats("播放量", plays),
+                    dz: collectStats("点赞量", likes),
+                    pl: collectStats("评论量", comments),
+                    zf: collectStats("转发量", shares),
+                    blspbfbvalue: calculateHotVideoPercentage(isHotCount, videoInfo.length)
+                };
+
+                videoTotalData[label] = stats;
+            };
+
+            // 处理个人视频数据
+            processVideoStats(latest_item_info, "gr");
+            // 处理星图视频数据
+            processVideoStats(latest_star_item_info, "xtAll");
+            // 落库数据
+            resultLast15Video = this.getLast15VideoData(videoTotalData);
+
+            console.log("同步resultLast15Video")
+            await this.sync2OP(resultLast15Video)
+        }
+        // tab3 连接用户 连接用户分布、连接用户画像
+        if (tabList && tabList[3]) {
+            console.log("tabList[3].click()", 3)
+            tabList[3].click();
+            await this.delay(1000, 10000);
+            await tryDo(3000, () => {
+                const element = document.querySelector('.star-footer-protocol-record');
+                if (element) {
+                    element.scrollIntoView({behavior: 'smooth'}); // 平滑滚动到元素
+                    console.log("Scrolled to .star-footer-protocol-record");
+                } else {
+                    console.error(".star-footer-protocol-record 未找到");
+                }
+            });
+            const radioGroup: any = await tryDo(1500, () => {
+                const radioGroupDom = document.querySelector('.page-right .tabs-content .title-wrapper .el-radio-group[data-btm="type-select"]');
+
+                if (radioGroupDom) {
+                    const radioButtons = radioGroupDom.children;
+                    if (radioButtons && radioButtons.length > 0) {
+                        return radioButtons;
+                    }
+                }
+                return false;
+            });
+            radioGroup[1].click();
+            // 受众标签类型 - 连接用户数
+            const connectUsersPromise: any = bus.subscribe(
+                /\/api\/data_sp\/author_link_struct/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
+            // 受众标签类型 - 连接用户画像 - 观众画像
+            const audiencePortraitPromise: any = bus.subscribe(
+                /\/api\/data_sp\/author_audience_distribution/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
+            // 受众标签类型 - 连接用户画像 - 粉丝画像
+            const fansPortraitPromise: any = bus.subscribe(
+                /\/api\/data_sp\/get_author_fans_distribution/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
+            const [connectUsersBody,
+                audiencePortraitBody,
+                fansPortraitBody] = await Promise.all([connectUsersPromise, audiencePortraitPromise, fansPortraitPromise]);
+            // 3、受众标签类型相关数据
+            const {link_struct} = connectUsersBody;
+            resultConnectNums = {
+                yljyhs: link_struct['5'].value,  // 月连接用户数
+                //TODO 月粉丝增长量 - 待定 240920
+                ljConnectNum: link_struct['1'].value,  // 了解
+                xqConnectNum: link_struct['2'].value,  // 兴趣
+                xhConnectNum: link_struct['3'].value,  // like
+                zsConnectNum: link_struct['4'].value   // 追随
+            };
+            const {value: maxValue} = Object.values(link_struct)
+                .slice(0, 4)
+                .reduce((acc, item) => item.proportion > acc.proportion ? item : acc, {
+                    proportion: -Infinity,
+                    value: 0
+                });
+            resultConnectNums.ysdyhs = resultConnectNums.yljyhs - maxValue;
+            console.log("同步resultConnectNums")
+            await this.sync2OP(resultConnectNums)
+            // 观众画像数据
+            const audienceByPeopleType: Record<string, string> = {};
+            const audienceByAge: Record<string, string> = {};
+            const audienceByGender: Record<string, string> = {};
+            const audienceByDevice: Record<string, string> = {};
+            const audienceByProvinceRegion: Record<string, string> = {};
+            const audienceByCityRegion: Record<string, string> = {};
+            audiencePortraitBody.distributions.forEach(distribution => {
+                switch (distribution.type_display) {
+                    case '八大人群分布':
+                        distribution.distribution_list.forEach(item => {
+                            audienceByPeopleType[item.distribution_key] = item.distribution_value;
+                        });
+                        break;
+                    case '年龄分布':
+                        distribution.distribution_list.forEach(item => {
+                            audienceByAge[item.distribution_key] = item.distribution_value;
+                        });
+                        break;
+                    case '性别分布':
+                        distribution.distribution_list.forEach(item => {
+                            const genderKey = item.distribution_key === 'male' ? '男性' : '女性';
+                            audienceByGender[genderKey] = item.distribution_value;
+                        });
+                        break;
+                    case '设备品牌分布':
+                        distribution.distribution_list.forEach(item => {
+                            audienceByDevice[item.distribution_key] = item.distribution_value;
+                        });
+                        break;
+                    case '省份分布':
+                        distribution.distribution_list.forEach(item => {
+                            audienceByProvinceRegion[item.distribution_key] = item.distribution_value;
+                        });
+                        break;
+                    case '城市分布':
+                        distribution.distribution_list.forEach(item => {
+                            audienceByCityRegion[item.distribution_key] = item.distribution_value;
+                        });
+                        break;
+                    default:
+                        console.warn(`未处理的分布类型: ${distribution.type_display}`);
+                }
+            });
+            resultPortrait["bdrqRatio"] = audienceByPeopleType
+            resultPortrait["gzAge"] = audienceByAge
+            resultPortrait["gzSex"] = audienceByGender
+            resultPortrait["gzDevice"] = audienceByDevice
+            resultPortrait["gzAreaProvince"] = audienceByProvinceRegion
+            resultPortrait["gzAreaCity"] = audienceByCityRegion
+            // 粉丝画像
+            const ageDistribution: Record<string, string> = {};
+            const genderDistribution: Record<string, string> = {};
+            const deviceBrandDistribution: Record<string, string> = {};
+            const provinceDistribution: Record<string, string> = {};// 粉丝地域分布 - 省份分布
+            const cityDistribution: Record<string, string> = {};
+            fansPortraitBody.distributions.forEach(distribution => {
+                switch (distribution.type_display) {
+                    case '年龄分布':
+                        distribution.distribution_list.forEach(item => {
+                            ageDistribution[item.distribution_key] = item.distribution_value;
+                        })
+                        break;
+                    case '性别分布':
+                        distribution.distribution_list.forEach(item => {
+                            genderDistribution[item.distribution_key] = item.distribution_value;
+                        })
+                        break;
+                    case '设备品牌分布':
+                        distribution.distribution_list.forEach(item => {
+                            deviceBrandDistribution[item.distribution_key] = item.distribution_value;
+                        })
+                        break;
+                    case '省份分布':
+                        distribution.distribution_list.forEach(item => {
+                            provinceDistribution[item.distribution_key] = item.distribution_value;
+                        })
+                        break;
+                    case '城市分布':
+                        distribution.distribution_list.forEach(item => {
+                            cityDistribution[item.distribution_key] = item.distribution_value;
+                        })
+                        break;
+                    default:
+                        break;
+                }
+            });
+            resultPortrait["fsAge"] = ageDistribution
+            resultPortrait["fsSex"] = genderDistribution
+            resultPortrait["fsDevice"] = deviceBrandDistribution
+            resultPortrait["fsAreaProvince"] = provinceDistribution
+            resultPortrait["fsAreaCity"] = cityDistribution
+            console.log("同步resultPortrait")
+            await this.sync2OP(resultPortrait)
+        }
+
+        //tab4 商业能力 星图指数
+        if (tabList && tabList[4]) {
+            console.log("tabList[4].click()", 4);
+            await this.delay(1000, 10000);
+            tabList[4].click();
+            // 星图指数
+            const xtIndexPromise: any = bus.subscribe(
+                /\/api\/data_sp\/get_author_link_info/,
+                (rs: any) => {
+                    let body = bus.parseBody(rs);
+                    return body.hasOwnProperty('base_resp') ? body : false;
+                }
+            );
+            const [xtIndexBody] = await Promise.all([xtIndexPromise]);
+            // 4、星图指数数据
+            resultIndexValue = {
+                syHzIndex: xtIndexBody.cooperate_index.value,
+                syXjbIndex: xtIndexBody.cp_index.value,
+                syZhIndex: xtIndexBody.link_convert_index.value,
+                syZcIndex: xtIndexBody.link_shopping_index.value,
+                syCbIndex: xtIndexBody.link_spread_index.value,
+                syXtIndex: xtIndexBody.link_star_index.value,
+            }
+            console.log("同步resultIndexValue")
+            await this.sync2OP(resultIndexValue)
+        }
+        resultData = {
+            resultLast15Video,
+            resultConnectNums,
+            resultPortrait,
+            resultIndexValue
+        }
+        console.log("collectOtherData ok => resultData", resultData);
+        return resultData;
     }
 
     /**
@@ -1253,6 +1261,8 @@ export class XtResourceHandler extends CollectHandler {
             return currentTime >= targetTime;
         });
     };
+
+
 }
 
 
