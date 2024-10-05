@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全剧对象Window</title>
+</head>
+<body>
+
+</body>
+<script>
+  let name  = 'js';
+  function sayName() {
+    alert(this.name);
+  }
+  console.log(window.name);
+  sayName();
+  window.sayName();
+</script>
+</html>
