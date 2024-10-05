@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DomOperator</title>
+</head>
+<body>
+  <p id="p-id">Hello Css Style</p>
+
+  <p id="js">JavaScript</p >
+  <div id="list">
+    <p id="java">Java</p >
+    <p id="python">Python</p >
+    <p id="scheme">Scheme</p >
+  </div>
+</body>
+<script>
+  // 创建元素
+  const divEl = document.createElement('div');
+  divEl.innerHTML = 'Hello World';
+  document.body.appendChild(divEl);
+  // 添加样式
+  const style = document.createElement('style');
+  style.innerHTML = `
+  div {
+    color: red;
+    font-size: 20px;
+    width: 200px;
+    border: 3px solid #000;
+    padding: 10px;
+    margin: 100px;
+    background-color: #ccc;
+    text-align: center;
+    box-shadow: 0px 10px 20px #000;
+    transition: all 0.5s;
+    &:hover {
+      transform: scale(1.2);
+      box-shadow: 0px 5px 10px #000;
+    }
+  }
+  `;
+  // 设置css样式
+  const pEl = document.getElementById('p-id');
+  pEl.style.color = 'blue';
+  pEl.style.fontSize = '30px';
+  pEl.style.paddingTop = '20px';
+  document.head.appendChild(style);
+
+  // appendChild(), 把一个字节点添加到父节点的最后一个字节点
+  const jsEl = document.getElementById('js');
+  jsEl.innerHTML = 'JavaScript_InnerHTML';
+  const listEl = document.getElementById('list');
+  listEl.appendChild(jsEl);
+  console.log(listEl)
+</script>
+</html>
