@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>变量</title>
+</head>
+<body>
+  <button id="btn">Press ME</button>
+  <button id="greet_btn">按这里</button>
+  <div id="greeting"></div>
+</body>
+<script>
+  const btn = document.getElementById('btn');
+  btn.onclick = function () {
+    // prompt：https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt
+    let sign = prompt("你是什么星座的？");
+    if (sign === "白羊座") {
+      alert("哇！我也是白羊座的耶！");
+    }else {
+      alert("Emmmmm.... 你在说什么")
+    }
+  }
+  // var 声明变量，没有初始化值
+  let a = 0;
+  console.log("%c 2 --> Line: 23||变量.html\n a: ","color:#0f0;", a);
+  let myNumber = "500"; // oops, this is still a string
+  console.error(typeof myNumber)
+  myNumber = 500; // much better — now this is a number
+  console.error(typeof myNumber)
+  // 数值
+  let myInt = 5;
+  console.log("myInt type => ",typeof myInt)
+  console.log("%c 2 --> Line: 30||变量.html\n myInt: ","color:#0f0;", myInt);
+  let myFloat = 6.667;
+  console.log("myFloat type => ",typeof myFloat)
+  console.log("%c 3 --> Line: 32||变量.html\n myFloat: ","color:#ff0;", myFloat);
+
+  console.log(1000 ** 102)
+
+  // 字符串
+  const one = "你好，";
+  console.log("%c 9 --> Line: 40||变量.html\n one: ","color:#acf;", one);
+  const two = "请问最近如何？";
+  console.log("%c 9 --> Line: 43||变量.html\n two: ","color:#acf;", two);
+  const joined = `${one}${two}`;
+  console.log("%c 9 --> Line: 45||变量.html\n joined: ","color:#acf;", joined);
+  // 上下文中的串联
+  const greet_btn = document.getElementById("greet_btn");
+
+  function greet() {
+    const name = prompt("你叫什么名字？");
+    const greeting = document.querySelector("#greeting");
+    greeting.textContent = `你好呀，${name}！很高兴见到你！`;
+    // 动态添加样式
+    const style = document.createElement("style");
+    style.textContent = `
+        #greeting {
+            color: blue; /* 字体颜色 */
+            border: 2px solid black; /* 边框 */
+            padding: 10px; /* 边框内边距 */
+            margin-top: 10px; /* 边距 */
+        }
+    `;
+    document.head.appendChild(style);
+  }
+
+  greet_btn.addEventListener("click", greet);
+</script>
+</html>
