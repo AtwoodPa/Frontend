@@ -1,0 +1,1 @@
+document.write("Hello, World!");// 第01行代码通过调用document对象的write()方法向页面中写入一行信息
