@@ -1,0 +1,10 @@
+（1）创建Node应用程序目录，并进入该目录
+mkdir vueprojects && vueprojects
+（2）通过npm命令进行初始化项目操作
+npm init -y
+（3）通过npm命令在本地安装Webpack开发包
+npm install webpack webpack-cli --save-dev
+
+在npm命令中使用参数install表示安装第三方开发包，后面指定了开发包的名称webpack和webpack-cli。
+其中，webpack-cli表示webpack的命令行工具，也就是在命令行中可以支持使用Webpack。
+另外，使用参数“--save-dev”表示该安装包为调试开发时的依赖项，信息会记录到package.json文件中的devDependencies子项中，后期项目发布时不需要这些安装包。
