@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tingkl.mcn.mapper.AuditAssignPayLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.tingkl.mcn.model.audit.AuditAssignPayLog">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="projectId" column="project_id" jdbcType="INTEGER"/>
+        <result property="assignId" column="assign_id" jdbcType="INTEGER"/>
+        <result property="payNewCode" column="pay_new_code" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="submitterId" column="submitter_id" jdbcType="INTEGER"/>
+        <result property="reviewerId" column="reviewer_id" jdbcType="INTEGER"/>
+        <result property="submitTime" column="submit_time" jdbcType="TIMESTAMP"/>
+        <result property="actionTime" column="action_time" jdbcType="TIMESTAMP"/>
+        <result property="submitUrl" column="submit_url" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="search" resultMap="BaseResultMap">
+        select
+        log.id, log.project_id, log.assign_id, log.pay_new_code, log.status,
+        log.submitter_id, log.reviewer_id, log.submit_time, log.action_time,
+        log.submit_url, log.remark
+        from audit_assign_pay_log log
+        left join project p on log.project_id = p.id
+        <where>
+            <if test="projectId != null">
+                log.project_id = #{projectId}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                and p.name LIKE CONCAT('%', #{projectName}, '%')
+            </if>
+            <if test="submitterId != null">
+                and log.submitter_id = #{submitterId}
+            </if>
+            <if test="statusList != null and statusList.size() > 0">
+                and log.status in
+                <foreach collection="statusList" item="status" open="(" separator="," close=")">
+                    #{status}
+                </foreach>
+            </if>
+        </where>
+        order by log.submit_time desc
+    </select>
+
+    <select id="queryById" resultMap="BaseResultMap">
+        select id,
+               project_id,
+               assign_id,
+               pay_new_code,
+               status,
+               submitter_id,
+               reviewer_id,
+               submit_time,
+               action_time,
+               submit_url,
+               remark
+        from audit_assign_pay_log
+        where id = #{id}
+    </select>
+
+    <select id="queryByAssignAndPayNew" resultMap="BaseResultMap">
+        select id,
+               project_id,
+               assign_id,
+               pay_new_code,
+               status,
+               submitter_id,
+               reviewer_id,
+               submit_time,
+               action_time,
+               submit_url,
+               remark
+        from audit_assign_pay_log
+        where assign_id = #{assignId} and pay_new_code = #{payNewCode}
+    </select>
+
+    <insert id="save" keyProperty="id" useGeneratedKeys="true">
+        insert into audit_assign_pay_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">project_id,</if>
+            <if test="assignId != null">assign_id,</if>
+            <if test="payNewCode != null">pay_new_code,</if>
+            <if test="status != null">status,</if>
+            <if test="submitterId != null">submitter_id,</if>
+            <if test="reviewerId != null">reviewer_id,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="actionTime != null">action_time,</if>
+            <if test="submitUrl != null">submit_url,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">#{projectId},</if>
+            <if test="assignId != null">#{assignId},</if>
+            <if test="payNewCode != null">#{payNewCode},</if>
+            <if test="status != null">#{status},</if>
+            <if test="submitterId != null">#{submitterId},</if>
+            <if test="reviewerId != null">#{reviewerId},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="actionTime != null">#{actionTime},</if>
+            <if test="submitUrl != null">#{submitUrl},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+
+    <update id="update">
+        update audit_assign_pay_log
+        <set>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="assignId != null">
+                assign_id = #{assignId},
+            </if>
+            <if test="payNewCode != null">
+                pay_new_code = #{payNewCode},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="submitterId != null">
+                submitter_id = #{submitterId},
+            </if>
+            <if test="reviewerId != null">
+                reviewer_id = #{reviewerId},
+            </if>
+            <if test="submitTime != null">
+                submit_time = #{submitTime},
+            </if>
+            <if test="actionTime != null">
+                action_time = #{actionTime},
+            </if>
+            <if test="submitUrl != null and submitUrl != ''">
+                submit_url = #{submitUrl},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
+
