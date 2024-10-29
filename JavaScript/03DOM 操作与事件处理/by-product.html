@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div class="auxo-radio-group auxo-radio-group-outline index-module__SelectRadioCls___2cqL8" elementtiming="element-timing">
+    <label class="auxo-radio-button-wrapper auxo-radio-button-wrapper-checked" elementtiming="element-timing">
+      <span class="auxo-radio-button auxo-radio-button-checked" elementtiming="element-timing">
+        <input type="radio" class="auxo-radio-button-input" value="7" checked="" elementtiming="element-timing">
+        <span class="auxo-radio-button-inner" elementtiming="element-timing"></span>
+      </span>
+      <span elementtiming="element-timing">近7天</span>
+    </label>
+
+    <label class="auxo-radio-button-wrapper" elementtiming="element-timing">
+      <span class="auxo-radio-button" elementtiming="element-timing">
+        <input type="radio" class="auxo-radio-button-input" value="30" elementtiming="element-timing">
+        <span class="auxo-radio-button-inner" elementtiming="element-timing"></span>
+      </span><span elementtiming="element-timing">近30天</span>
+    </label>
+
+    <label class="auxo-radio-button-wrapper" elementtiming="element-timing">
+      <span class="auxo-radio-button" elementtiming="element-timing">
+        <input type="radio" class="auxo-radio-button-input" value="90" elementtiming="element-timing">
+        <span class="auxo-radio-button-inner" elementtiming="element-timing"></span>
+      </span>
+      <span elementtiming="element-timing">近90天</span>
+    </label>
+  </div>
+</body>
+<script>
+  // 点击tab，订阅
+  const tabList: any = await tryDo(1500, () => {
+    const clickDom = document.querySelector('.auxo-tabs-nav-list')
+    if (clickDom) {
+      const tabList = clickDom.children;
+      if (tabList && tabList[2]) {
+        return tabList
+      }
+    }
+    return false
+  });
+  if (tabList && tabList.length > 0) {
+    tabList[0].click();
+    const radioButtons = document.querySelectorAll('.index-module__SelectRadioCls___2cqL8  .auxo-radio-button-wrapper ');
+    console.log("radioButtons", radioButtons)
+    await this.delay(4000, 8000);
+    radioButtons[1].click();
+    await this.delay(2000, 4000);
+    // 订阅30天数据
+    let day30ProductInfo = await $bus.subscribe(
+            /\/ecom\/captain\/selection_pool\/promotion_data_overview\?[^]*date_type=1/,
+            (rs: string) => {
+              let body = $bus.parseBody(rs);
+              return body.data;
+            }).catch((error) => {
+      console.log("error", error)
+    });
+    console.log("day30ProductInfo",day30ProductInfo)
+    const {total_sales, promoters_count, promoters_captain_count} = day30ProductInfo;
+    console.log("产品销量：",total_sales)
+    console.log("推广达人：",promoters_count)
+    console.log("团长合作数：",promoters_captain_count)
+  }
+</script>
+</html>
