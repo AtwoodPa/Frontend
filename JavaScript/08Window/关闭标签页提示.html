@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关闭标签页时提示保存</title>
+</head>
+<body>
+<h1>关闭页面提示示例</h1>
+<textarea id="content" placeholder="在此输入内容..."></textarea>
+<br>
+<button id="save">保存</button>
+
+<script>
+    // 数据修改标志
+    let isModified = false;
+
+    // 获取文本框和按钮
+    const content = document.getElementById('content');
+    const saveButton = document.getElementById('save');
+
+    // 监听文本框输入事件，标记数据为已修改
+    content.addEventListener('input', function () {
+        isModified = true;
+    });
+
+    // 点击保存按钮，标记数据为已保存
+    saveButton.addEventListener('click', function () {
+        alert('数据已保存！');
+        isModified = false;
+    });
+
+    // 添加关闭页面或刷新时的提示
+    window.addEventListener('beforeunload', function (e) {
+        if (isModified) {
+            // 显示提示信息
+            const message = '您提交修改的信息还未保存，离开页面将丢失信息。请确认是否离开页面？';
+            e.preventDefault(); // 防止页面关闭（现代浏览器要求）
+            e.returnValue = message; // 部分浏览器需要设置 returnValue 属性
+            return message;
+        }
+    });
+</script>
+</body>
+</html>
