@@ -1,0 +1,206 @@
+.material-center {
+    .ivu-drawer-body {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        padding: 0;
+    }
+    .search-section {
+        display: flex;
+        margin: 5px 0 -15px 5px;
+        gap: 8px;
+        align-items: center;
+        .search-input {
+            width: 200px;
+        }
+        .upload-list {
+        //margin-top: 16px;
+            .upload-item {
+                padding: 8px;
+                border-bottom: 1px solid #f0f0f0;
+
+                .upload-info {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    .filename {
+                        margin-right: 16px;
+                    }
+                }
+            }
+        }
+    }
+
+    .content-section {
+        flex: 1;
+        overflow-y: auto;
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+
+            .image-item {
+                border: 1px solid #eee;
+                border-radius: 4px;
+                overflow: hidden;
+                cursor: pointer;
+                position: relative;
+                height: 100%;
+
+                &.selected {
+                    border-color: #2d8cf0;
+                }
+                .image-options {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    z-index: 2;
+                    display: none; // 默认隐藏
+
+                .unbind-single-btn {
+                    padding: 2px;
+                    height: auto;
+                    background: rgba(0, 0, 0, 0);
+                    border: none;
+                    border-radius: 50%;
+
+                    .ivu-icon {
+                        color: red;
+                    }
+
+                    &:hover {
+                        background: rgba(0, 0, 0, 0);
+                    }
+                }
+                }
+
+                &:hover {
+                    .image-options {
+                        display: block; // 悬浮时显示
+                    }
+                }
+                .image-wrapper {
+                    position: relative;
+                    padding-top: 75%;
+
+                    .material-image {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                .image-info {
+                    padding: 4px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    .image-name {
+                        display: block;
+                        color: #333;
+                        margin-bottom: 4px;
+                        text-align: center;
+                    }
+                    .image-meta {
+                        display: flex;
+                        justify-content: space-between; /* 左右对齐 */
+                        align-items: center;
+                        margin-top: auto;
+
+                        .image-type { /* 文件类型在左边 */
+                            font-size: 12px;
+                            color: #999;
+                        }
+                        .image-uploader { /* 上传人信息在右边 */
+                            font-size: 12px;
+                            color: #999;
+                        }
+                    }
+                }
+            }
+        }
+
+        .file-list {
+            margin-top: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            .file-item {
+                display: flex;
+                align-items: center;
+                padding: 6px;
+                border-bottom: 1px solid #eee;
+                cursor: pointer;
+                &:hover {
+                    background-color: #f8f8f8;
+                }
+                &.selected {
+                    background-color: #b6d7fa;
+                }
+                .file-checkbox {
+                    margin-right: 12px;
+                }
+                .file-icon {
+                    margin-right: 12px;
+                    color: #2d8cf0;
+
+                }
+                .file-info {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    .file-name {
+                        color: #333;
+                        margin-bottom: 4px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
+                    .file-meta {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                        font-size: 12px;
+                        color: #999;
+
+                        span {
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                        }
+                    }
+                }
+                .file-actions {
+                    margin-left: auto;
+                    font-size: 12px;
+                    color: #666;
+                    white-space: nowrap;
+                    .ivu-btn {
+                        padding: 0 8px;
+                        .ivu-icon {
+                            margin-right: 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .footer-actions {
+        padding: 8px;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .selection-info {
+            color: #666;
+        }
+
+        .action-buttons {
+            gap: 8px;
+        }
+    }
+}
