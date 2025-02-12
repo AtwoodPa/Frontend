@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.theme.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/glide.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF2442',
+                        secondary: '#07C160'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '2px',
+                        DEFAULT: '4px',
+                        'md': '8px',
+                        'lg': '12px',
+                        'xl': '16px',
+                        '2xl': '20px',
+                        '3xl': '24px',
+                        'full': '9999px',
+                        'button': '4px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glide__bullets {
+            bottom: auto;
+            top: 20px;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .strength-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+<div class="min-h-screen relative bg-gray-100">
+    <div class="glide h-full absolute inset-0">
+        <div class="glide__track h-full" data-glide-el="track">
+            <ul class="glide__slides h-full">
+                <li class="glide__slide h-full">
+                    <div class="relative w-full h-full">
+                        <img src="https://ai-public.mastergo.com/ai/img_res/383584754ada1d68d30958b37dc4dd1a.jpg" class="w-full h-full object-cover" alt="背景图片">
+                        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+                    </div>
+                </li>
+                <li class="glide__slide h-full">
+                    <div class="relative w-full h-full">
+                        <img src="https://ai-public.mastergo.com/ai/img_res/c79e46989911b0513fecfdbf27764c6d.jpg" class="w-full h-full object-cover" alt="背景图片">
+                        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+                    </div>
+                </li>
+                <li class="glide__slide h-full">
+                    <div class="relative w-full h-full">
+                        <img src="https://ai-public.mastergo.com/ai/img_res/f81e62b04282a2bd25162f8c25f86645.jpg" class="w-full h-full object-cover" alt="背景图片">
+                        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="glide__bullets" data-glide-el="controls[nav]">
+            <button class="glide__bullet" data-glide-dir="=0"></button>
+            <button class="glide__bullet" data-glide-dir="=1"></button>
+            <button class="glide__bullet" data-glide-dir="=2"></button>
+        </div>
+    </div>
+
+    <div class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
+        <div class="w-full max-w-[480px] bg-white rounded-xl shadow-lg p-8">
+            <div class="text-center mb-8">
+                <img src="https://ai-public.mastergo.com/ai/img_res/3313c6983bdf0deb430515b924885080.jpg"
+                     alt="Logo"
+                     class="mx-auto mb-4 w-[120px] h-[40px] object-contain">
+                <p class="text-gray-600 text-lg">创新科技，智慧未来</p>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <div class="relative">
+                        <input type="text"
+                               id="account"
+                               class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                               placeholder="手机号/邮箱/用户名">
+                        <i class="fa-solid fa-circle-check absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary hidden" id="validIcon"></i>
+                        <i class="fa-solid fa-circle-xmark absolute right-3 top-1/2 transform -translate-y-1/2 text-primary hidden" id="invalidIcon"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="relative">
+                        <input type="password"
+                               id="password"
+                               class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                               placeholder="请输入密码">
+                        <i class="fa-solid fa-eye absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600" id="togglePassword"></i>
+                    </div>
+                    <div class="mt-2 h-1 bg-gray-200 rounded-full">
+                        <div id="strengthBar" class="h-full rounded-full transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <button class="w-full bg-primary text-white py-3 !rounded-button hover:bg-opacity-90 transition-colors whitespace-nowrap">
+                    登 录
+                </button>
+
+                <div class="flex items-center justify-between">
+                    <button class="text-gray-600 hover:text-gray-800 whitespace-nowrap !rounded-button">
+                        短信验证码登录
+                    </button>
+                    <div class="flex items-center space-x-4">
+                        <i class="fab fa-weixin cursor-pointer text-2xl text-secondary"></i>
+                        <i class="fa-solid fa-envelope cursor-pointer text-2xl text-primary"></i>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <a href="#" class="text-primary hover:text-opacity-80">新用户？3秒极速注册 →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 left-0 right-0 bg-black bg-opacity-30 backdrop-blur-sm text-white py-4 z-20">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="text-gray-300">当前在线：</span>
+                    <span class="text-primary text-xl font-bold" id="onlineUsers">12847</span>
+                </div>
+                <div>
+                    <span class="text-gray-300">今日访问峰值：</span>
+                    <span class="text-primary text-xl font-bold" id="peakVisits">45962</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    new Glide('.glide', {
+        type: 'carousel',
+        autoplay: 5000,
+        hoverpause: true,
+        perView: 1,
+        gap: 0
+    }).mount();
+    const accountInput = document.getElementById('account');
+    const validIcon = document.getElementById('validIcon');
+    const invalidIcon = document.getElementById('invalidIcon');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const strengthBar = document.getElementById('strengthBar');
+    function validateAccount(value) {
+        if (!value) return false;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^1[3-9]\d{9}$/;
+        return emailRegex.test(value) || phoneRegex.test(value) || value.length >= 3;
+    }
+
+    accountInput.addEventListener('input', (e) => {
+        const value = e.target.value;
+        if (!value) {
+            validIcon.classList.add('hidden');
+            invalidIcon.classList.add('hidden');
+            return;
+        }
+
+        if (validateAccount(value)) {
+            validIcon.classList.remove('hidden');
+            invalidIcon.classList.add('hidden');
+        } else {
+            validIcon.classList.add('hidden');
+            invalidIcon.classList.remove('hidden');
+        }
+    });
+
+    togglePassword.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        togglePassword.classList.toggle('fa-eye');
+        togglePassword.classList.toggle('fa-eye-slash');
+    });
+
+    passwordInput.addEventListener('input', (e) => {
+        const value = e.target.value;
+        if (!value) {
+            strengthBar.className = 'h-full rounded-full transition-all duration-300';
+            strengthBar.style.width = '0';
+            return;
+        }
+
+        if (value.length < 6) {
+            strengthBar.className = 'h-full rounded-full transition-all duration-300 bg-red-500';
+            strengthBar.style.width = '33.333%';
+        } else if (value.length < 10) {
+            strengthBar.className = 'h-full rounded-full transition-all duration-300 bg-yellow-500';
+            strengthBar.style.width = '66.666%';
+        } else {
+            strengthBar.className = 'h-full rounded-full transition-all duration-300 bg-green-500';
+            strengthBar.style.width = '100%';
+        }
+    });
+
+    document.querySelector('button').addEventListener('click', () => {
+        // 处理登录逻辑
+    });
+</script>
+</body>
+</html>

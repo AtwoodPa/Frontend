@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 / 注册</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.theme.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/glide.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#6366F1'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '2px',
+                        DEFAULT: '4px',
+                        'md': '8px',
+                        'lg': '12px',
+                        'xl': '16px',
+                        '2xl': '20px',
+                        '3xl': '24px',
+                        'full': '9999px',
+                        'button': '4px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            min-height: 1024px;
+        }
+        .glide__bullet {
+            background-color: #E5E7EB;
+            width: 8px;
+            height: 8px;
+        }
+        .glide__bullet--active {
+            background-color: #4F46E5;
+        }
+        .form-container {
+            transition: transform 0.5s ease-in-out;
+        }
+        input:focus {
+            outline: none;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<div class="flex min-h-screen">
+    <div class="w-1/2 relative overflow-hidden transition-all duration-500" id="leftSide">
+        <div class="glide h-full" id="banner">
+            <div class="glide__track h-full" data-glide-el="track">
+                <ul class="glide__slides h-full">
+                    <li class="glide__slide">
+                        <div class="h-full bg-cover bg-center" style="background-image: url('https://ai-public.mastergo.com/ai/img_res/8e7199ae374f285a4fbc94c4e1880667.jpg')"></div>
+                    </li>
+                    <li class="glide__slide">
+                        <div class="h-full bg-cover bg-center" style="background-image: url('https://ai-public.mastergo.com/ai/img_res/50ed7bd3427dcf8bc475000af2178426.jpg')"></div>
+                    </li>
+                    <li class="glide__slide">
+                        <div class="h-full bg-cover bg-center" style="background-image: url('https://ai-public.mastergo.com/ai/img_res/ab406efade3339a9adf32abf2addb6e8.jpg')"></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="glide__bullets absolute bottom-8 w-full flex justify-center" data-glide-el="controls[nav]">
+                <button class="glide__bullet mx-1" data-glide-dir="=0"></button>
+                <button class="glide__bullet mx-1" data-glide-dir="=1"></button>
+                <button class="glide__bullet mx-1" data-glide-dir="=2"></button>
+            </div>
+        </div>
+    </div>
+    <div class="w-1/2 flex items-center justify-center relative" id="rightSide">
+        <div class="w-[420px]">
+            <div class="text-center mb-8">
+                <h1 class="font-['Pacifico'] text-3xl text-primary mb-2">logo</h1>
+                <p class="text-gray-600">欢迎使用我们的服务</p>
+            </div>
+
+            <div class="mb-6 flex justify-center gap-8">
+                <button class="text-lg font-medium transition-colors duration-200 login-tab active-tab" onclick="switchForm('login')">登录</button>
+                <button class="text-lg font-medium transition-colors duration-200 register-tab" onclick="switchForm('register')">注册</button>
+            </div>
+
+            <form id="loginForm" class="form-container">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">手机号码</label>
+                    <div class="relative">
+                        <input type="number" class="w-full px-4 py-2 border border-gray-300 rounded-button text-sm" placeholder="请输入手机号码">
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                    <div class="relative">
+                        <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-button text-sm" placeholder="请输入密码">
+                        <i class="fas fa-eye absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"></i>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-primary border-gray-300 rounded">
+                        <span class="ml-2 text-sm text-gray-600">记住我</span>
+                    </label>
+                    <a href="#" class="text-sm text-primary hover:text-secondary">忘记密码？</a>
+                </div>
+                <button class="w-full bg-primary hover:bg-secondary text-white font-medium py-2 px-4 !rounded-button transition-colors duration-200 whitespace-nowrap">登录</button>
+            </form>
+
+            <form id="registerForm" class="form-container hidden">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">手机号码</label>
+                    <div class="relative">
+                        <input type="number" class="w-full px-4 py-2 border border-gray-300 rounded-button text-sm" placeholder="请输入手机号码">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">验证码</label>
+                    <div class="flex gap-2">
+                        <input type="number" class="flex-1 px-4 py-2 border border-gray-300 rounded-button text-sm" placeholder="请输入验证码">
+                        <button class="px-4 py-2 bg-gray-100 text-gray-600 !rounded-button whitespace-nowrap text-sm">获取验证码</button>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">设置密码</label>
+                    <div class="relative">
+                        <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-button text-sm" placeholder="请设置密码">
+                        <i class="fas fa-eye absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"></i>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">确认密码</label>
+                    <div class="relative">
+                        <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-button text-sm" placeholder="请确认密码">
+                        <i class="fas fa-eye absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"></i>
+                    </div>
+                </div>
+                <button class="w-full bg-primary hover:bg-secondary text-white font-medium py-2 px-4 !rounded-button transition-colors duration-200 whitespace-nowrap">注册</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    new Glide('#banner', {
+        type: 'carousel',
+        autoplay: 3000,
+        hoverpause: true,
+        gap: 0,
+        animationDuration: 1000
+    }).mount();
+    function switchForm(type) {
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginTab = document.querySelector('.login-tab');
+        const registerTab = document.querySelector('.register-tab');
+        const banner = document.getElementById('banner');
+        const leftSide = document.getElementById('leftSide');
+        const rightSide = document.getElementById('rightSide');
+        if (type === 'login') {
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+            loginTab.classList.add('text-primary');
+            registerTab.classList.remove('text-primary');
+            banner.style.transform = 'translateX(0)';
+            leftSide.style.order = '1';
+            rightSide.style.order = '2';
+        } else {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+            loginTab.classList.remove('text-primary');
+            registerTab.classList.add('text-primary');
+            banner.style.transform = 'translateX(0)';
+            leftSide.style.order = '2';
+            rightSide.style.order = '1';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('.login-tab').classList.add('text-primary');
+    });
+</script>
+</body>
+</html>
