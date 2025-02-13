@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直播带货平台</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.theme.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#64748b'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '2px',
+                        DEFAULT: '4px',
+                        'md': '8px',
+                        'lg': '12px',
+                        'xl': '16px',
+                        '2xl': '20px',
+                        '3xl': '24px',
+                        'full': '9999px',
+                        'button': '4px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glide {
+            --glide-height: 120px;
+            --glide-bullet-color: #2563eb;
+            --glide-bullet-inactive-color: #94a3b8;
+            --glide-bullet-inactive-opacity: 0.8;
+            --glide-bullet-size: 8px;
+            --glide-bullet-gap: 4px;
+        }
+        .glide__slide img {
+            width: 100%;
+            height: var(--glide-height);
+            object-fit: cover;
+            object-position: center;
+            border-radius: 8px;
+        }
+        .glide__bullets {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: var(--glide-bullet-gap);
+        }
+        .glide__bullet {
+            width: var(--glide-bullet-size);
+            height: var(--glide-bullet-size);
+            background-color: var(--glide-bullet-inactive-color);
+            opacity: var(--glide-bullet-inactive-opacity);
+            border-radius: 50%;
+            border: none;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+        .glide__bullet--active {
+            background-color: var(--glide-bullet-color);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+<div class="mx-auto max-w-7xl px-4">
+    <div class="flex gap-8 py-6">
+        <div class="w-[460px] space-y-4">
+            <div class="flex items-center gap-4">
+                <div class="relative w-[220px]">
+                    <button class="!rounded-button flex w-full items-center justify-between border border-gray-300 bg-white px-4 py-2 text-sm">
+                        <span>直播平台</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                    </button>
+                </div>
+                <div class="relative flex-1">
+                    <input type="text" placeholder="请输入主播名称" class="w-full border border-gray-300 px-4 py-2 text-sm outline-none !rounded-button">
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative w-[220px]">
+                    <button class="!rounded-button flex w-full items-center justify-between border border-gray-300 bg-white px-4 py-2 text-sm">
+                        <span>选品类目</span>
+                        <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                    </button>
+                </div>
+                <button class="!rounded-button whitespace-nowrap bg-primary px-8 py-2 text-sm text-white hover:bg-blue-700">重置</button>
+            </div>
+        </div>
+        <div class="flex-1">
+            <div class="glide h-[120px]">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        <li class="glide__slide">
+                            <div class="relative h-full w-full overflow-hidden rounded-lg">
+                                <img src="https://ai-public.mastergo.com/ai/img_res/22f159d797294d8718b1137655a221a8.jpg" alt="2024春节直播带货战报">
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                                    <h3 class="text-lg font-medium text-white">2024春节直播带货战报</h3>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="glide__slide">
+                            <div class="relative h-full w-full overflow-hidden rounded-lg">
+                                <img src="https://ai-public.mastergo.com/ai/img_res/4a3fee447d586aa2ce052e486ed652e4.jpg" alt="美妆护肤品类直播数据分析">
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                                    <h3 class="text-lg font-medium text-white">美妆护肤品类直播数据分析</h3>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="glide__bullets" data-glide-el="controls[nav]">
+                    <button class="glide__bullet" data-glide-dir="=0"></button>
+                    <button class="glide__bullet" data-glide-dir="=1"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-8 overflow-hidden rounded-lg border border-gray-200 bg-white">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+            <tr>
+                <th class="whitespace-nowrap px-6 py-4 text-left text-sm font-medium text-gray-500">主播</th>
+                <th class="whitespace-nowrap px-6 py-4 text-left text-sm font-medium text-gray-500">合作模式</th>
+                <th class="whitespace-nowrap px-6 py-4 text-left text-sm font-medium text-gray-500">直播主题</th>
+                <th class="whitespace-nowrap px-6 py-4 text-left text-sm font-medium text-gray-500">选品类目</th>
+                <th class="whitespace-nowrap px-6 py-4 text-left text-sm font-medium text-gray-500">选品价格区间</th>
+                <th class="whitespace-nowrap px-6 py-4 text-left text-sm font-medium text-gray-500">直播时间</th>
+                <th class="whitespace-nowrap px-6 py-4 text-left text-sm font-medium text-gray-500">推荐产品上播</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+            <tr>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ai-public.mastergo.com/ai/img_res/277830ded5d507f00be1dfef21f61d30.jpg" alt="周雨彤" class="h-10 w-10 rounded-full object-cover">
+                        <div>
+                            <div class="font-medium">周雨彤</div>
+                            <div class="text-sm text-gray-500">ID: ZYT889900</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-sm">坑位直播</td>
+                <td class="px-6 py-4 text-sm">春节美妆护肤专场</td>
+                <td class="px-6 py-4 text-sm">美妆护肤</td>
+                <td class="px-6 py-4 text-sm">￥99-599</td>
+                <td class="px-6 py-4 text-sm">2024-02-15 20:00</td>
+                <td class="px-6 py-4">
+                    <button class="!rounded-button whitespace-nowrap bg-primary px-4 py-1.5 text-sm text-white hover:bg-blue-700">
+                        推荐商品
+                        <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ai-public.mastergo.com/ai/img_res/749d562b507a7178568848c637524da6.jpg" alt="林书豪" class="h-10 w-10 rounded-full object-cover">
+                        <div>
+                            <div class="font-medium">林书豪</div>
+                            <div class="text-sm text-gray-500">ID: LSH668899</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-sm">达人自播</td>
+                <td class="px-6 py-4 text-sm">年货零食大礼包</td>
+                <td class="px-6 py-4 text-sm">食品</td>
+                <td class="px-6 py-4 text-sm">￥29-299</td>
+                <td class="px-6 py-4 text-sm">2024-02-16 19:30</td>
+                <td class="px-6 py-4">
+                    <button class="!rounded-button whitespace-nowrap bg-primary px-4 py-1.5 text-sm text-white hover:bg-blue-700">
+                        推荐商品
+                        <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ai-public.mastergo.com/ai/img_res/beab130139a5308d38b5e256df997523.jpg" alt="张梦晨" class="h-10 w-10 rounded-full object-cover">
+                        <div>
+                            <div class="font-medium">张梦晨</div>
+                            <div class="text-sm text-gray-500">ID: ZMC778899</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-sm">平台自播</td>
+                <td class="px-6 py-4 text-sm">春节穿搭分享</td>
+                <td class="px-6 py-4 text-sm">女装</td>
+                <td class="px-6 py-4 text-sm">￥89-899</td>
+                <td class="px-6 py-4 text-sm">2024-02-17 19:00</td>
+                <td class="px-6 py-4">
+                    <button class="!rounded-button whitespace-nowrap bg-primary px-4 py-1.5 text-sm text-white hover:bg-blue-700">
+                        推荐商品
+                        <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/glide.min.js"></script>
+<script>
+    new Glide('.glide', {
+        type: 'carousel',
+        autoplay: 3000,
+        hoverpause: true,
+        perView: 1,
+        gap: 0
+    }).mount();
+</script>
+</body>
+</html>
