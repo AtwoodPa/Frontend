@@ -1,8 +1,8 @@
 <template>
   <div class="page-container">
     <!-- 左侧轮播区域 -->
-    <div class="carousel-section">
-      <div class="carousel-header">
+    <div class="left-section">
+      <div class="left-header">
         <h1>小红书</h1>
         <p>发现美好生活</p>
       </div>
@@ -37,8 +37,8 @@
     </div>
 
     <!-- 右侧登录区域 -->
-    <div class="login-section">
-      <div class="login-container">
+    <div class="right-section">
+      <div class="right-container">
         <div class="form-toggle">
           <button
               :class="['toggle-button', isLogin ? 'active' : '']"
@@ -219,13 +219,13 @@ export default {
   margin: 0 auto;
 }
 
-.carousel-section {
+.left-section {
   width: 50%;
   position: relative;
   background: linear-gradient(to bottom right, #ff4b4b, #8a2be2, #4b6cb7);
 }
 
-.carousel-header {
+.left-header {
   position: absolute;
   top: 32px;
   left: 32px;
@@ -233,12 +233,12 @@ export default {
   color: white;
 }
 
-.carousel-header h1 {
+.left-header h1 {
   font-size: 32px;
   font-weight: bold;
 }
 
-.carousel-header p {
+.left-header p {
   margin-top: 8px;
   color: rgba(255, 255, 255, 0.8);
 }
@@ -292,7 +292,7 @@ export default {
   margin-bottom: 8px;
 }
 
-.login-section {
+.right-section {
   width: 50%;
   display: flex;
   align-items: center;
@@ -301,7 +301,7 @@ export default {
   padding: 0 80px;
 }
 
-.login-container {
+.right-container {
   width: 100%;
   max-width: 400px;
 }
@@ -498,3 +498,71 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 </style>
+
+<!--<style lang="less">-->
+<!--.sign-in-container {-->
+<!--  display: flex;-->
+<!--  min-height: 100vh; /* 改为视窗高度单位 */-->
+<!--  width: 100%; /* 改为全宽 */-->
+<!--  margin: 0 auto;-->
+<!--  background: linear-gradient(to bottom, #f0f0f0, #ffffff); /* 添加全局渐变背景 */-->
+
+<!--  .left-top-section {-->
+<!--    position: absolute;-->
+<!--    top: 20px; /* 调整位置 */-->
+<!--    left: 5%; /* 改为百分比适配 */-->
+<!--    z-index: 10;-->
+
+<!--    .logo-container {-->
+<!--      padding: 16px 0;-->
+<!--      .logo {-->
+<!--        width: 120px;-->
+<!--      }-->
+<!--    }-->
+<!--  }-->
+
+<!--  /* 左侧区域保持不变 */-->
+
+<!--  .right-section {-->
+<!--    width: 50%;-->
+<!--    position: relative;-->
+<!--    overflow: hidden; /* 添加溢出隐藏 */-->
+
+<!--    .right-section__top-bg {-->
+<!--      position: absolute; /* 改为绝对定位 */-->
+<!--      top: 0;-->
+<!--      right: 0;-->
+<!--      width: 100%;-->
+<!--      height: 100%;-->
+<!--      background-image: url("../../assets/mct/right-section-background.png");-->
+<!--      background-size: cover;-->
+<!--      background-position: right top; /* 背景图定位到右上角 */-->
+<!--      background-repeat: no-repeat;-->
+<!--      z-index: 1; /* 设置层级 */-->
+<!--    }-->
+
+<!--    .banner-container {-->
+<!--      position: relative;-->
+<!--      z-index: 2; /* 设置高于背景图的层级 */-->
+<!--      width: 100%;-->
+<!--      height: 50vh; /* 使用视窗高度单位 */-->
+<!--      margin-top: 30%; /* 调整位置 */-->
+<!--      transform: translateX(-10%); /* 微调水平位置 */-->
+
+<!--      .banner-slide {-->
+<!--        width: 120%; /* 扩大宽度防止留白 */-->
+<!--        height: 100%;-->
+<!--        img {-->
+<!--          width: 100%;-->
+<!--          height: 100%;-->
+<!--          object-fit: contain; /* 保持图片完整显示 */-->
+<!--        }-->
+<!--      }-->
+<!--    }-->
+<!--  }-->
+
+<!--  .footer-link {-->
+<!--    /* 底部样式保持不变 */-->
+<!--  }-->
+<!--}-->
+<!--</style>-->
