@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            background: #f5f5f5;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .wallet-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            min-height: 600px;
+        }
+
+        .cards-stack {
+            position: relative;
+            height: 500px;
+        }
+
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 220px;
+            border-radius: 16px;
+            transition:
+                    transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28),
+                    opacity 0.15s linear !important;
+            cursor: pointer;
+            overflow: hidden;
+            will-change: transform, opacity;
+        }
+
+        /* 初始堆叠布局 */
+        .card:nth-child(1) {
+            transform: translateY(140px) scale(0.92);
+            z-index: 1;
+            opacity: 0.9;
+        }
+        .card:nth-child(2) {
+            transform: translateY(70px) scale(0.96);
+            z-index: 2;
+            opacity: 0.95;
+        }
+        .card:nth-child(3) {
+            transform: translateY(0) scale(1);
+            z-index: 3;
+            opacity: 1;
+        }
+
+        /* 激活状态 */
+        .card.active {
+            transform: translateY(-20px) scale(1) !important;
+            z-index: 999;
+            opacity: 1 !important;
+        }
+
+        .card.hidden {
+            opacity: 0 !important;
+            transform: translateY(100%) scale(0.8) !important;
+            pointer-events: none;
+            transition:
+                    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.1s linear !important;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-panel {
+            position: absolute;
+            top: 240px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            padding: 6px;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            visibility: hidden;
+        }
+
+        .info-panel.active {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .balance {
+            font-size: 24px;
+            color: #ff5252;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="wallet-container">
+    <div class="cards-stack">
+        <div class="card" data-info='{"title":"金陵通","balance":"￥1.75","transactions":["上海市未收费","已读取卡片 2024/10/17"]}'>
+            <img src="image/trends_card_1@4x.png" class="card-image">
+        </div>
+        <div class="card" data-info='{"title":"上海公共交通卡","balance":"￥32.50","transactions":["地铁2号线 ￥4.00","公交781路 ￥2.00"]}'>
+            <img src="image/trends_card_2@4x.png" class="card-image">
+        </div>
+        <div class="card" data-info='{"title":"招商银行一卡通","balance":"￥15,230.00","transactions":["转账收入 ￥5,000.00"]}'>
+            <img src="image/trends_card_3@4x.png" class="card-image">
+        </div>
+    </div>
+
+    <div class="info-panel">
+        <div class="info-header">
+            <h2 class="card-title">金陵通</h2>
+            <div class="balance">￥1.75</div>
+        </div>
+        <button class="recharge-btn">充值</button>
+        <div class="recent-transaction">
+            <h4>近期交易</h4>
+            <ul class="transaction-list"></ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.card');
+        const infoPanel = document.querySelector('.info-panel');
+        let activeCard = null;
+
+        // 强制同步布局更新
+        const forceLayout = (element) => void element.offsetHeight;
+
+        const updateInfoPanel = (data) => {
+            infoPanel.querySelector('.card-title').textContent = data.title;
+            infoPanel.querySelector('.balance').textContent = data.balance;
+            infoPanel.querySelector('.transaction-list').innerHTML =
+                data.transactions.map(t => `<li>${t}</li>`).join('');
+        };
+
+        const handleCardClick = (card) => {
+            const isActive = card === activeCard;
+
+            // 立即重置所有卡片状态
+            cards.forEach(c => {
+                c.classList.remove('active', 'hidden');
+                c.style.transition = '';
+            });
+
+            if (!isActive) {
+                // 设置激活卡片
+                card.classList.add('active');
+                activeCard = card;
+
+                // 立即隐藏其他卡片
+                cards.forEach(c => {
+                    if(c !== card) {
+                        c.classList.add('hidden');
+                        forceLayout(c); // 强制立即应用样式
+                    }
+                });
+
+                // 更新信息面板
+                updateInfoPanel(JSON.parse(card.dataset.info));
+                infoPanel.classList.add('active');
+
+                // 微调动画时序
+                requestAnimationFrame(() => {
+                    cards.forEach(c => {
+                        if(c !== card) {
+                            c.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                        }
+                    });
+                });
+            } else {
+                // 恢复初始状态
+                activeCard = null;
+                infoPanel.classList.remove('active');
+                cards.forEach(c => c.classList.remove('hidden'));
+            }
+        };
+
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleCardClick(card);
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.card') && !e.target.closest('.info-panel')) {
+                cards.forEach(c => {
+                    c.classList.remove('active', 'hidden');
+                });
+                infoPanel.classList.remove('active');
+                activeCard = null;
+            }
+        });
+    });
+</script>
+</body>
+</html>
