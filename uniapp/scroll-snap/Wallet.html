@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .wallet-container {
+            position: relative;
+            width: 300px;
+            height: 500px;
+            margin: 20px auto;
+        }
+
+        .cards-container {
+            position: relative;
+            height: 400px;
+        }
+
+        .card {
+            position: absolute;
+            width: 280px;
+            height: 180px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            padding: 20px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .info-display {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .bank-logo {
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .card-number {
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wallet-container">
+        <div class="cards-container">
+            <div class="card" data-info="上海公共交通卡">
+                <div class="card-content">
+                    <div class="card-header">
+                        <span>交通卡</span>
+                        <span>上海</span>
+                    </div>
+                    <div class="card-body">
+                        <div>公共交通卡</div>
+                        <div class="card-number">3991</div>
+                    </div>
+                    <div class="card-footer">
+                        <span>金陵通</span>
+                        <span>银联</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-info="招商银行">
+                <div class="card-content">
+                    <div class="card-header">
+                        <span class="bank-logo">招商银行</span>
+                        <span>DEBIT</span>
+                    </div>
+                    <div class="card-body">
+                        <div>一卡通</div>
+                        <div>UnionPay</div>
+                    </div>
+                    <div class="card-footer">
+                        <span>CHINA MERCHANTS BANK</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info-display">点击卡片查看信息</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.cards-container');
+            const cards = document.querySelectorAll('.card');
+            const infoDisplay = document.querySelector('.info-display');
+
+            function adjustCards() {
+                cards.forEach((card, index) => {
+                    const offset = index * 20;
+                    if (index === cards.length - 1) {
+                        card.style.transform = 'translateX(0) translateY(0)';
+                        card.style.zIndex = 100;
+                    } else {
+                        card.style.transform = `translateX(${offset}px) translateY(-${offset}px)`;
+                        card.style.zIndex = 100 - index;
+                    }
+                });
+            }
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    container.appendChild(card);
+                    adjustCards();
+                    infoDisplay.textContent = card.dataset.info;
+                });
+            });
+
+            // 初始化卡片位置
+            adjustCards();
+        });
+    </script>
+</body>
+</html>

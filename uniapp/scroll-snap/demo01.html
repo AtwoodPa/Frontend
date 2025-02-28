@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  figure {
+    margin: 0;
+  }
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+  }
+  .wrap {
+      display: flex;
+      flex-direction: column;
+    grid-template-columns: repeat(30, 1fr);
+    overflow-y: auto;
+    /*padding-inline: 6vmin;*/
+    /*padding-block: 12vmin;*/
+    /*padding-bottom: 25px;*/
+    /*padding-top: 20px;*/
+    /*gap: 30px;*/
+
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch; /* Important for iOS devices */
+
+  }
+  .product-card {
+    width: 200px;
+    box-shadow: 0 2px 40px rgba(0 0 0 / 15%);
+      position: absolute;
+    border-radius: 10px;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+</style>
+<script>
+
+</script>
+<body>
+
+<div class="wrap">
+    <div class="product-card">
+        <figure class="product-card_image">
+            <img src='https://images.unsplash.com/photo-1667702463403-4a7f6fbb5b5a?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NzMyNzc1MTk&ixlib=rb-4.0.3&q=80'
+                 alt=''>
+        </figure>
+    </div>
+    <div class="product-card">
+        <figure class="product-card_image">
+            <img src='https://images.unsplash.com/photo-1670871213812-5ce18f5a75ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NzMyNzc1MTk&ixlib=rb-4.0.3&q=80&w=400'
+                 alt=''>
+        </figure>
+    </div>
+    <div class="product-card">
+        <figure class="product-card_image">
+            <img src='https://images.unsplash.com/photo-1667702463403-4a7f6fbb5b5a?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NzMyNzc1MTk&ixlib=rb-4.0.3&q=80'
+                 alt=''>
+        </figure>
+    </div>
+    <div class="product-card">
+        <figure class="product-card_image">
+            <img src="https://cdn.shopifycdn.net/s/files/1/0672/7896/2971/files/1-1_a568accf-7ead-4ff0-a4f6-2a03a47f0469.jpg">
+        </figure>
+    </div>
+    <div class="product-card">
+        <figure class="product-card_image">
+            <img src="https://cdn.shopifycdn.net/s/files/1/0672/7896/2971/files/1-1_a568accf-7ead-4ff0-a4f6-2a03a47f0469.jpg">
+        </figure>
+    </div>
+    <div class="product-card">
+        <figure class="product-card_image">
+            <img src='https://images.unsplash.com/photo-1667702463403-4a7f6fbb5b5a?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NzMyNzc1MTk&ixlib=rb-4.0.3&q=80'
+                 alt=''>
+        </figure>
+    </div>
+</div>
+
+</body>
+</html>
