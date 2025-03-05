@@ -1,0 +1,165 @@
+.trends-bg-top {
+    width: 100%;
+    height: 180rpx;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    mask-image: linear-gradient(to bottom,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(0, 0, 0, 0) 90%
+    );
+    -webkit-mask-image: linear-gradient(to bottom,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0) 95%
+    );
+}
+
+.page-bg {
+    position: absolute;
+    top: -20rpx;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    /*1125/1126*750*/
+    width: 749.333rpx;
+    /*1754/1126*750*/
+    height: 1168.294rpx;
+}
+
+.trends-container {
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: center;*/
+    position: relative;
+    height: 100vh;
+
+}
+
+.cards-container {
+    position: relative;
+    width: 706.705rpx;
+    margin: 0 auto;
+    top: 20%;
+    z-index: 9;
+    height: 100vh;
+}
+
+.card {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-radius: 32rpx;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    /*position: absolute;*/
+    /*border-radius: 32rpx;*/
+    /*transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);*/
+}
+
+.card-image {
+    width: 706.705rpx;
+    height: 400.310rpx;
+}
+
+
+.active {
+    transform: translateY(-20vh) scale(1);
+    transition: transform 0.8s linear;
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.un-active {
+    transform: translateY(40vh);
+    transition: transform 0.6s linear;
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+}
+
+.info-scroll-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 999;
+}
+
+.info-panel {
+    position: relative;
+    padding: 20rpx;
+    transition: all 0.5s ease;
+}
+
+.info-image {
+    width: 100%;
+    border-radius: 32rpx;
+}
+
+.back-btn {
+    position: fixed;
+    top: 115rpx;
+    left: 32rpx;
+    width: 18rpx;
+    height: 18rpx;
+    z-index: 1000;
+}
+
+.back-btn {
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.back-btn.fade-in {
+    opacity: 1;
+    animation-name: fadeInDown;
+    animation-duration: 2s;
+    animation-fill-mode: none;
+}
+
+.back-btn.fade-out {
+    opacity: 0;
+    animation-name: fadeOutDown;
+    animation-duration: 2s;
+    animation-fill-mode: none;
+
+}
+
+.slide-in-up {
+    opacity: 1;
+    animation-name: slideInUp;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-fill-mode: none;
+}
+
+.slide-out-down {
+    opacity: 0;
+    animation-name: slideOutDown;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-fill-mode: none;
+}
+.fade-in-down {
+    opacity: 1;
+    animation-name: fadeInDown;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+}
+
+.fade-out-down {
+    opacity: 1;
+    animation-name: fadeOutDown;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-fill-mode: none;
+}
+.fade-in-up {
+    animation-name: fadeInUp;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-fill-mode: none;
+}
+
+
+

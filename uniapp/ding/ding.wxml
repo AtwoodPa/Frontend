@@ -1,0 +1,8 @@
+<title>trends</title>
+<image src="{{cdn.bg_1}}" class="g-bg-top" mode="widthFix"/>
+<safe-container>
+    <view class="card-item item-1">1</view>
+    <view class="card-item item-2">2</view>
+    <view class="card-item item-3">3</view>
+
+</safe-container>

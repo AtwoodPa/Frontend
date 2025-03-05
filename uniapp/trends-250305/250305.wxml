@@ -1,0 +1,54 @@
+<view class="trends-container">
+    <image src="{{cdn.bg_1}}" class="trends-bg-top" mode="widthFix"></image>
+    <image class="page-bg" src="{{cdn.trends_bg2}}" mode="widthFix"></image>
+    <scroll-view
+            class="trends-container"
+            scroll-y
+            enhanced
+            show-scrollbar="{{false}}"
+            scroll-top="{{scrollTop}}"
+            scroll-with-animation
+    >
+        <!-- 卡片 -->
+        <view class="cards-container">
+            <view
+                    wx:for="{{cards}}"
+                    wx:key="index"
+                    class="card {{item.dynamicStyle}}"
+                    style="transform: {{item.transform}};"
+                    bindtap="handleCardTap"
+                    data-index="{{index}}"
+            >
+                <image
+                        class="card-image"
+                        src="{{cdn[item.imageKey]}}"
+                        mode="widthFix"
+                ></image>
+            </view>
+        </view>
+        <!-- info -->
+        <view
+                class="info-container {{infoVisible ? 'visible' : ''}}"
+                style="opacity: {{infoOpacity}}; transform: translateY({{infoTranslate}}rpx);"
+        >
+            <image
+                    wx:if="{{showBackButton}}"
+                    class="back-btn {{backBtnAnimClass}}"
+                    src="{{cdn.back}}"
+                    mode="widthFix"
+                    bindtap="handleReset"
+            ></image>
+            <view class="info-content">
+                <view wx:if="{{activeCard.title === '账号诊断'}}">
+                    <image class="info-image" src="{{cdn.trends_card_info_1}}" mode="widthFix"></image>
+                </view>
+                <view wx:if="{{activeCard.title === '次抛服务'}}">
+                    <rich-text nodes="{{serviceNodes}}"></rich-text>
+                </view>
+                <view wx:if="{{activeCard.title === '全民经济'}}">
+                    <rich-text nodes="{{peopleNodes}}"></rich-text>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
+</view>

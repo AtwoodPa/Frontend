@@ -1,0 +1,63 @@
+<title>trends</title>
+<view class="trends-container">
+    <image src="{{cdn.bg_1}}" class="trends-bg-top"/>
+    <image class="page-bg" src="{{cdn.trends_bg2}}" mode="widthFix"/>
+    <view class="cards-container">
+        <view wx:if="{{!showInfo}}" class="cards-stack">
+            <view
+                    wx:for="{{cards}}"
+                    wx:key="index"
+                    class="card"
+                    style="transform: {{item.transform}}; z-index: {{item.index}};"
+                    bindtap="handleCardTap"
+                    data-index="{{index}}"
+            >
+                <van-image
+                        width="100%"
+                        height="100%"
+                        src="{{cdn[item.imageKey]}}"
+                        radius="32rpx"/>
+            </view>
+        </view>
+
+        <scroll-view
+                wx:else
+                class="info-scroll-view"
+                scroll-y="true">
+            <image
+                    wx:if="{{showBackButton}}"
+                    class="back-btn {{backBtnAnimClass}}"
+                    src="{{cdn.back}}"
+                    mode="widthFix"
+                    bindtap="handleReset"/>
+            <view class="scroll-content">
+                <view class="card active {{resetAnimating ? 'fadeOut' : 'fadeInUp'}}"  bindtap="handleReset">
+                    <van-image
+                            fit="widthFix"
+                            width="100%"
+                            height="100%"
+                            src="{{cdn[activeCard.imageKey]}}"
+                            radius="32rpx"/>
+                </view>
+            </view>
+
+            <view class="info-panel {{resetAnimating ? 'fadeOut' : 'fadeInUp'}}">
+                <view wx:if="{{activeCard.title === '账号诊断'}}">
+                    <image class="info-image" src="{{cdn.trends_card_info_1}}" mode="widthFix"/>
+                </view>
+
+                <view wx:if="{{activeCard.title === '次抛服务'}}">
+                    <view class="rich-content">
+                        <rich-text nodes="{{serviceNodes}}"></rich-text>
+                    </view>
+                </view>
+
+                <view wx:if="{{activeCard.title === '全民经济'}}">
+                    <view class="rich-content">
+                        <rich-text nodes="{{peopleNodes}}"></rich-text>
+                    </view>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+</view>

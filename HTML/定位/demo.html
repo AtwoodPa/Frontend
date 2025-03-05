@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /*position: absolute;*/
+      }
+        .box1 {
+            height: 100px;
+            width: 100px;
+            background-color: red;
+          /*元素会相对于离自己最近的设置了相对或绝对定位的父元素进行定位*/
+          /*脱离文本流*/
+          position: absolute;
+          left: 50px;
+          top: 50px;
+        }
+
+        .box2 {
+            height: 100px;
+            width: 100px;
+            background-color: #2b85e4;
+          /*不会影响其他*/
+          position: relative;
+
+          left: 50px;
+          top: 50px;
+        }
+
+        .box3 {
+            height: 100px;
+            width: 100px;
+            background-color: #2fc061;
+
+        }
+
+        .box4 {
+            height: 100px;
+            width: 100px;
+            background-color: #8a2be2;
+
+        }
+    </style>
+</head>
+<body>
+<div class="box1">111111111111</div>
+<div class="box2">222222222222</div>
+<div class="box3">333333333333</div>
+<div class="box4">444444444444</div>
+</body>
+</html>
