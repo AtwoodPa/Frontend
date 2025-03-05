@@ -1,0 +1,37 @@
+<title>trends</title>
+<image class="g-bg-top" src="{{cdn.trends_bg_1}}" mode="widthFix"/>
+<view wx:if="{{showBackButton}}" class="back-container">
+    <image class="back-btn {{backBtnAnimClass}}"
+           src="{{cdn.back}}"
+           mode="widthFix"
+           bindtap="handleReset"/>
+</view>
+<safe-container customStyle="padding-bottom: 0;">
+    <view class="trends-container" style="{{infoVisible? 'overflow-y: scroll;':''}}">
+        <view class="cards-container">
+            <image
+                    wx:for="{{cards}}"
+                    wx:key="index"
+                    class="card"
+                    style="{{item.dynamicStyle}}; {{!infoVisible ? 'box-shadow: 6rpx -6rpx 10rpx rgba(0, 0, 0, .1);':''}}"
+                    bindtap="handleCardTap"
+                    data-index="{{index}}"
+                    src="{{cdn[item.imageKey]}}"
+                    mode="widthFix"/>
+        </view>
+
+        <view class="info-container {{infoVisible ? 'visible' : ''}}">
+            <view wx:if="{{activeCard.title === '账号诊断'}}">
+                <image class="info-image" src="{{cdn.trends_card_info_1}}" mode="widthFix"/>
+            </view>
+            <view class="rich-content" wx:if="{{activeCard.title === '次抛服务'}}">
+                <image class="info-image" src="{{cdn.trends_card_info_1}}" mode="widthFix"/>
+                <!--                    <rich-text  nodes="{{serviceNodes}}"></rich-text>-->
+            </view>
+            <view class="rich-content" wx:if="{{activeCard.title === '全民经济'}}">
+                <image class="info-image" src="{{cdn.trends_card_info_1}}" mode="widthFix"/>
+                <!--                    <rich-text  nodes="{{peopleNodes}}"></rich-text>-->
+            </view>
+        </view>
+    </view>
+</safe-container>
