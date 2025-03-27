@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/HTML/gridstack" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/IView/Tree/view-ui-project-vite" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/NestJS/example-demo-00" vcs="Git" />
   </component>
